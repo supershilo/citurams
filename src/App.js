@@ -5,7 +5,7 @@ import LandingPage from './components/LandingPage';
 const App = () => {
   return (
     <div className="app">
-      <LandingPage />
+      <HomePage />
     </div>
   );
 };
