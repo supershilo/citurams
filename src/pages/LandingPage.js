@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
+import FeatureSection from '../components/FeatureSection';
 
 
 const LandingPage = () => {
@@ -76,14 +77,8 @@ const LandingPage = () => {
       </Container>
 
       <div style={{
-          backgroundColor: 'grey',
-          padding: '4rem 0 2rem 0',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
         }}>
-
+          <FeatureSection/>
         </div>
       <Footer />
     </div>

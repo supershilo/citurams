@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/system';
+import React from 'react';
+import { styled} from '@mui/system';
 import {
   AppBar,
   Toolbar,
@@ -9,18 +9,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
 } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
-import EditProfile from './EditProfile';
-
+import {useNavigate } from 'react-router-dom';
 
 
 
@@ -56,9 +49,8 @@ const DrawerPaper = styled('div')({
   color: 'white',
 });
 
-const HomePage = () => {
+const HomeFrame = () => {
   const navigate = useNavigate();
-  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   const handleLogoClick = () => {
     navigate('/home');
@@ -77,13 +69,6 @@ const HomePage = () => {
   };
   const handleLogoutClick = () => {
     navigate('/');
-  };
-  const handleProfileClick = () => {
-    setProfileModalOpen(true);
-  };
-
-  const handleProfileModalClose = () => {
-    setProfileModalOpen(false);
   };
 
   return (
@@ -111,7 +96,7 @@ const HomePage = () => {
         <DrawerPaper>
           {/* User Profile Section */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
-            <div  onClick={handleProfileClick} style={{ cursor: 'pointer'}}>
+            <div>
               <img
                 src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"  // Replace with the actual path to the profile image
                 alt="Profile"
@@ -125,23 +110,23 @@ const HomePage = () => {
 
           <List>
             {/* Add items for the navigation drawer */}
-            <ListItem button  onClick={handleDashboardClick} >
+            <ListItem button>
               <ListItemIcon style={{ color: 'white' }}>
                 <PostAddOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Dashboard" style={{ fontFamily: "'Poppins', sans-serif" }} />
+              <ListItemText primary="Dashboard" onClick={handleDashboardClick} style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
-            <ListItem button onClick={handleNewRequestClick}>
+            <ListItem button>
               <ListItemIcon style={{ color: 'white' }}>
                 <PostAddOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="New Request"  style={{ fontFamily: "'Poppins', sans-serif" }} />
+              <ListItemText primary="New Request" onClick={handleNewRequestClick} style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
-            <ListItem button onClick={handleMyRequestClick} style={{ marginBottom: '150px' }}>
+            <ListItem button style={{ marginBottom: '150px' }}>
               <ListItemIcon style={{ color: 'white' }}>
                 <ArticleOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="My Request" />
+              <ListItemText primary="My Request" onClick={handleMyRequestClick}/>
             </ListItem>
             <ListItem button onClick={handleLogoutClick}>
               <ListItemIcon style={{ color: 'white' }}>
@@ -172,74 +157,9 @@ const HomePage = () => {
         </DrawerPaper>
       </MainDrawer>
 
-      {/* Main Content */}
-      <div className='mt-24 -ml-12'>
-      <div className='ml-12'>
-      <div className='ml-12'>
-        <p>Hello Juan De la Cruz,</p>
-        <p>Welcome to CIT-U Repair & Assets Management System</p>
-      </div>
-    <div className="p-12">
-    <div className="bg-gray-200 p-16 rounded-lg mb-6">
-        <h2 className="text-2xl font-bold mb-4 flex justify-center">Request Guide</h2>
-  
-        <div className="mt-4">
-          <h3 className="text-lg font-bold mb-2">REQUEST STEPS:</h3>
-  
-          <div className="mb-4">
-            <p className="font-bold">Step 1: Navigate to New Request Page</p>
-            <p>Click on the New Request button, located on the left side of the screen.</p>
-          </div>
-  
-          <div className="mb-4">
-            <p className="font-bold">Step 2: Filling out the Request Form</p>
-            <p>On the Request page, you'll find a form to submit your request. Fill in the necessary details in the form.</p>
-          </div>
-  
-          <div className="mb-4">
-            <p className="font-bold">Step 3: Submitting your Request</p>
-            <p>After completing the form, click the Submit button to send your request.</p>
-          </div>
-  
-          <div className="mb-4">
-            <p className="font-bold">Step 4: Viewing your Requests</p>
-            <p>After completing the form, you'll be directed to the "My Request" tab. Here, you can view all your submissions, check their status, and see any associated remarks.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-    </div>
-
-          {/* Profile Modal */}
-          <Dialog open={isProfileModalOpen} onClose={handleProfileModalClose} >
-
-    <DialogTitle className='bg-gray-200'>Edit Profile</DialogTitle>
-    <DialogContent>
-      <EditProfile />
-    </DialogContent>
-    <DialogActions>
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button onClick={handleProfileModalClose} type="button" className="text-sm font-semibold leading-6 text-gray-900">
-          Cancel
-        </button>
-        <button
-          onClick={handleProfileModalClose}
-          type="submit"
-          className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save Changes
-        </button>
-      </div>
-    </DialogActions>
-
-</Dialog>
-
-
-  
 
     </Root>
   );
 };
 
-export default HomePage;
+export default HomeFrame;
