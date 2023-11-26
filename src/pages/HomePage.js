@@ -12,6 +12,8 @@ import {
 } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Navigate, useNavigate } from 'react-router-dom';
 import '../styles/HomePage.css'; 
 const drawerWidth = 300;
 
@@ -41,6 +43,7 @@ const DrawerPaper = styled('div')({
 });
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const ImageContainer = styled('div')({
     marginTop: 'auto', // Push the image to the bottom
@@ -48,12 +51,23 @@ const HomePage = () => {
     left: '-40%',
   });
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <Root>
       {/* App Bar */}
-      <MainAppBar position="fixed">
-        <Toolbar>
-          {/* Add app bar content here */}
+      <MainAppBar position="fixed" sx={{ backgroundColor: 'white', color: 'white' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end'  }}>
+          <div>
+            <img
+              src="/LoginPage/CITURAMS.png"
+              alt="Logo"
+              style={{ height: '55px', cursor: 'pointer' }}
+            />
+          </div>
+
         </Toolbar>
       </MainAppBar>
       <Divider/>
@@ -65,16 +79,22 @@ const HomePage = () => {
           <List>
             {/* Add items for the navigation drawer */}
             <ListItem button>
-              <ListItemIcon>
+              <ListItemIcon style={{color:"white"}}>
               <PostAddOutlinedIcon/>
                 </ListItemIcon>
-              <ListItemText primary="New Request" />
+              <ListItemText primary="New Request" style={{fontFamily: "'Poppins', sans-serif"}} />
             </ListItem>
-            <ListItem button style={{ marginBottom: '330px' }}>
-              <ListItemIcon>
+            <ListItem button style={{ marginBottom: '260px' }}>
+              <ListItemIcon style={{color:"white"}}>
               <ArticleOutlinedIcon/>
                 </ListItemIcon>
               <ListItemText primary="My Request" />
+            </ListItem>
+            <ListItem button onClick={handleLogoClick} style={{ marginBottom: '50px' }}>
+              <ListItemIcon style={{color:"white"}}>
+              <LogoutIcon/>
+                </ListItemIcon>
+              <ListItemText primary="Logout" />
             </ListItem>
             
             {/* Add more items as needed */}

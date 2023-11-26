@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import '../styles/LoginPage.css'; 
 import { Card, TextField, Button, InputAdornment, SvgIcon, Typography} from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
@@ -8,6 +9,16 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleSubmitClick = () => {
+    navigate('/home');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -45,7 +56,7 @@ const LoginPage = () => {
       </div>
       <div className="right-side">
       <div className="logo-container">
-        <img src="/LoginPage/CITURAMS.png" alt="Logo" className="logo" />
+        <img src="/LoginPage/CITURAMS.png" alt="Logo" className="logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }} />
       </div>
       <div className="login-form-container">
       <Typography className="login-heading" variant="h4"  style={{ fontFamily: "'Poppins', sans-serif", marginBottom: '1.5rem', color: '#7D7C7C' }}>
@@ -94,19 +105,20 @@ const LoginPage = () => {
 
         </form>
         <Button
-  type="submit"
-  variant="contained"
-  color="primary"
-  sx={{
-    fontFamily: "'Poppins', sans-serif",
-    fontSize: '18px',
-    marginTop: 2,
-    width: '100%',
-    height: '50px',
-    backgroundColor: '#FC3031',
-    '&:hover': {
-      backgroundColor: '#bd262a', // Change this to your desired hover color
-    },
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={handleSubmitClick}
+          sx={{
+            fontFamily: "'Poppins', sans-serif",
+            fontSize: '18px',
+            marginTop: 2,
+            width: '100%',
+            height: '50px',
+            backgroundColor: '#FC3031',
+            '&:hover': {
+              backgroundColor: '#bd262a', // Change this to your desired hover color
+            },
   }}
 >
   Log in
