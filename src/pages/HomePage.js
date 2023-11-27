@@ -211,9 +211,8 @@ const HomePage = () => {
     </div>
     </div>
 
-          {/* Profile Modal */}
-          <Dialog open={isProfileModalOpen} onClose={handleProfileModalClose} >
-
+    {/* Profile Modal */}
+    <Dialog open={isProfileModalOpen} onClose={handleProfileModalClose} >
     <DialogTitle className='bg-gray-200'>Edit Profile</DialogTitle>
     <DialogContent>
       <EditProfile />

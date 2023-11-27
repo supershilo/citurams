@@ -7,33 +7,27 @@ function Footer() {
     <div className='footer-container'>
       <div class='footer-links'>
         <div className='footer-link-wrapper'>
-          <div class='footer-link-items'>
-            <h2>Contact Us</h2>
-            <Link to='/'>Contact</Link>
-            <Link to='/'>Support</Link>
-            <Link to='/'>Destinations</Link>
-            <Link to='/'>Sponsorships</Link>
+          <div class='footer-link-items  text-white'>
+            <h2 className='font-bold'>Contact Us</h2>
+            +63 32 411 2000<br/>
+            citurams@cit.edu
           </div>
         </div>
         <div className='footer-link-wrapper'>
-          <div class='footer-link-items'>
-            <h2>Address</h2>
-            <Link to='/'>Submit Video</Link>
-            <Link to='/'>Ambassadors</Link>
-            <Link to='/'>Agency</Link>
-            <Link to='/'>Influencer</Link>
+          <div class='footer-link-items text-white' >
+            <h2 className='font-bold'>Address</h2>
+            	N. Bacalso Avenue, <br/>Cebu City ,Philippines 6000
+          </div>
+          <div class='footer-link-items text-white'>
+            <h2 className='font-bold'>Office Hours</h2>
+            8:00 AM - 5:00 PM<br/>
+            Monday - Friday
           </div>
           <div class='footer-link-items'>
-            <h2>Social Media</h2>
-            <Link to='/'>Instagram</Link>
+            <h2 className='font-bold'>Social Media</h2>
             <Link to='/'>Facebook</Link>
-            <Link to='/'>Youtube</Link>
+            <Link to='/'>Instagram</Link>
             <Link to='/'>Twitter</Link>
-          </div>
-          <div class='footer-link-items'>
-            <h2>Office Hours</h2>
-            <Link to='/'>Investors</Link>
-            <Link to='/'>Terms of Service</Link>
           </div>
         </div>
       </div>

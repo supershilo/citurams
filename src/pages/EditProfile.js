@@ -3,26 +3,25 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 const EditProfile = () => {
   return (
     <div className="w-full">
-    <form>
+    <form className='bg-green-600'>
       <div className="space-y-12">
-        <div>
-          <div className="col-span-full">
-              <div className="mt-2 flex items-center gap-x-3">
-                <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
-                <button
-                  type="button"
-                  className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
-                </button>
-              </div>
-            </div>
-
-
+      <div className="flex items-center justify-center">
+        <div className="col-span-full">
+          <div className="mt-2 flex items-center gap-x-3">
+            <UserCircleIcon className="h-24 w-24 text-gray-300" aria-hidden="true" />
+            <button
+              type="button"
+              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
+              Change
+            </button>
+          </div>
         </div>
+      </div>
+
 
         <div className="border-b border-gray-900/10 pb-6">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
+          <h2 className="text-base font-semibold leading-2 text-gray-900">Personal Information</h2>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
