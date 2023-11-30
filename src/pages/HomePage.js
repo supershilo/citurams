@@ -19,8 +19,7 @@ import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
-import EditProfile from './EditProfile';
-
+import { BiSolidDashboard } from "react-icons/bi";
 
 
 
@@ -78,6 +77,10 @@ const HomePage = () => {
   const handleLogoutClick = () => {
     navigate('/');
   };
+
+  const handleMyProfileClick = ()=>{
+    navigate('/my-profile');
+  }
   const handleProfileClick = () => {
     setProfileModalOpen(true);
   };
@@ -85,6 +88,7 @@ const HomePage = () => {
   const handleProfileModalClose = () => {
     setProfileModalOpen(false);
   };
+  
 
   return (
     <Root>
@@ -111,7 +115,7 @@ const HomePage = () => {
         <DrawerPaper>
           {/* User Profile Section */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
-            <div  onClick={handleProfileClick} style={{ cursor: 'pointer'}}>
+            <div  onClick={handleMyProfileClick} style={{ cursor: 'pointer'}}>
               <img
                 src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"  // Replace with the actual path to the profile image
                 alt="Profile"
@@ -127,7 +131,7 @@ const HomePage = () => {
             {/* Add items for the navigation drawer */}
             <ListItem button  onClick={handleDashboardClick} >
               <ListItemIcon style={{ color: 'white' }}>
-                <PostAddOutlinedIcon />
+              <BiSolidDashboard />
               </ListItemIcon>
               <ListItemText primary="Dashboard" style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
@@ -210,29 +214,9 @@ const HomePage = () => {
     </div>
     </div>
     </div>
+  
 
-    {/* Profile Modal */}
-    <Dialog open={isProfileModalOpen} onClose={handleProfileModalClose} >
-    <DialogTitle className='bg-gray-200'>Edit Profile</DialogTitle>
-    <DialogContent>
-      <EditProfile />
-    </DialogContent>
-    <DialogActions>
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button onClick={handleProfileModalClose} type="button" className="text-sm font-semibold leading-6 text-gray-900">
-          Cancel
-        </button>
-        <button
-          onClick={handleProfileModalClose}
-          type="submit"
-          className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save Changes
-        </button>
-      </div>
-    </DialogActions>
 
-</Dialog>
 
 
   

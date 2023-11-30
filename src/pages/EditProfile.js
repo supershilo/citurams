@@ -2,8 +2,8 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 
 const EditProfile = () => {
   return (
-    <div className="w-full">
-    <form className='bg-green-600'>
+    <div className="w-full max-w-md mx-auto">
+    <form className='w-full max-w-md mx-auto'>
       <div className="space-y-12">
       <div className="flex items-center justify-center">
         <div className="col-span-full">

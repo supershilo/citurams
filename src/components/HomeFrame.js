@@ -14,7 +14,7 @@ import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate } from 'react-router-dom';
-
+import { BiSolidDashboard } from "react-icons/bi";
 
 
 const drawerWidth = 300;
@@ -70,6 +70,9 @@ const HomeFrame = () => {
   const handleLogoutClick = () => {
     navigate('/');
   };
+  const handleEditProfileClick = ()=>{
+    navigate('/my-profile');
+  }
 
   return (
     <Root>
@@ -96,7 +99,7 @@ const HomeFrame = () => {
         <DrawerPaper>
           {/* User Profile Section */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
-            <div>
+            <div  onClick={handleEditProfileClick} style={{ cursor: 'pointer'}}>
               <img
                 src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"  // Replace with the actual path to the profile image
                 alt="Profile"
@@ -112,7 +115,7 @@ const HomeFrame = () => {
             {/* Add items for the navigation drawer */}
             <ListItem button>
               <ListItemIcon style={{ color: 'white' }}>
-                <PostAddOutlinedIcon />
+              <BiSolidDashboard />
               </ListItemIcon>
               <ListItemText primary="Dashboard" onClick={handleDashboardClick} style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>

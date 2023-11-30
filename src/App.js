@@ -8,6 +8,7 @@ import AboutUsPage from './pages/AboutUsPage';
 import NewRequest from './pages/NewRequest';
 import MyRequest from './pages/MyRequest';
 import Dashboard from './pages/Dashboard';
+import MyProfile from './pages/MyProfile';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/new-request" element={<NewRequest />} />
           <Route path="/my-request" element={<MyRequest/>} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/my-profile" element={<MyProfile />} />
         </Routes>
       </div>
     </Router>
