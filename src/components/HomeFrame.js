@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled} from '@mui/system';
 import {
   AppBar,
@@ -15,12 +15,14 @@ import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate } from 'react-router-dom';
 import { BiSolidDashboard } from "react-icons/bi";
-
+import axios from 'axios';
+import { CSSTransition } from 'react-transition-group';
 
 const drawerWidth = 300;
 
 const Root = styled('div')(({ theme }) => ({
   display: 'flex',
+  transition: 'opacity 5s ease', // Apply transition to opacity
 }));
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
@@ -51,6 +53,8 @@ const DrawerPaper = styled('div')({
 
 const HomeFrame = () => {
   const navigate = useNavigate();
+  const storedUserEmail = sessionStorage.getItem('userEmail');
+  const [userData, setUserData] = useState(null);
 
   const handleLogoClick = () => {
     navigate('/home');
@@ -74,7 +78,31 @@ const HomeFrame = () => {
     navigate('/my-profile');
   }
 
+  useEffect(() => {
+    // Fetch user data when the component mounts
+    const fetchUserData = async () => {
+      try {
+        // Make a GET request to your user details endpoint
+        const response = await axios.get(`http://localhost:8080/user/getUserData?email=${storedUserEmail}`);
+        setUserData(response.data); // Assuming the response contains user data
+      } catch (error) {
+        console.error('Error fetching user data', error);
+      }
+    };
+
+    if (storedUserEmail) {
+      fetchUserData();
+    }
+  }, [storedUserEmail]);
+
+
   return (
+    <CSSTransition
+    in={true}
+    appear={true}
+    timeout={300}
+    classNames="fade" // CSS class prefix for transition styles
+  >
     <Root>
       {/* App Bar */}
       <MainAppBar position="fixed" sx={{ backgroundColor: 'white', color: 'white' }}>
@@ -103,12 +131,17 @@ const HomeFrame = () => {
               <img
                 src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"  // Replace with the actual path to the profile image
                 alt="Profile"
-                className="rounded-full ring-2 ring-white"
+                className="rounded-full ring-4 ring-white"
                 style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
               />
             </div>
-            <div className='text-white font-bold'>Juan De La Cruz</div>
-            <div className='text-white '>juandelacruz@cit.edu</div>
+            {/* Use userData to display user name and email */}
+            {userData && (
+              <>
+                <div className='text-white font-bold'>{userData.fname +' ' +userData.lname}</div>
+                <div className='text-white '>{userData.email}</div>
+              </>
+            )}
           </div>
 
           <List>
@@ -162,6 +195,7 @@ const HomeFrame = () => {
 
 
     </Root>
+    </CSSTransition>
   );
 };
 

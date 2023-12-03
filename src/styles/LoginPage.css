@@ -44,8 +44,7 @@
   .wildcat-login{
     width: 100%; 
     max-width: none; 
-    position: absolute; 
-    left: -35%; 
+    position: absolute;  
     top: -10%;
   }
 

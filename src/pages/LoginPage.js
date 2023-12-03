@@ -4,48 +4,42 @@ import '../styles/LoginPage.css';
 import { Card, TextField, Button, InputAdornment, SvgIcon, Typography} from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-
+import axios from 'axios';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [id, setID] = useState('');
 
   const navigate = useNavigate();
-
-  const handleSubmitClick = () => {
-    navigate('/home');
-  };
 
   const handleLogoClick = () => {
     navigate('/');
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Handle login logic here
-      // Simple validation
-      if (!email || !password) {
-        setError('Please enter both email and password.');
-        return;
+  const handleSubmitClick = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/user/login', {
+        email: email,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        // Store user email in sessionStorage
+        sessionStorage.setItem('userEmail', email);
+        sessionStorage.setItem('userID', id);
+        // Navigate to the home page
+        navigate('/home');
+      } else {
+        setError('Authentication failed. Please check your credentials.');
       }
-  
-      // Simulate API call or authentication logic
-      try {
-        // Assuming loginUser is a function that handles authentication
-        // const user = await loginUser(email, password);
-  
-        // Reset state and navigate to the authenticated route
-        setEmail('');
-        setPassword('');
-        setError(null);
-  
-        // For demonstration purposes, log the user object to the console
-        // console.log('Authenticated user:', user);
-      } catch (error) {
-        // Handle authentication error
-        setError('Invalid email or password. Please try again.');
-      }
-  } 
+    } catch (error) {
+      setError('Authentication failed. Please check your credentials');
+    }
+  };
+
+
 
   return (
     <div className="login-page">
@@ -63,7 +57,7 @@ const LoginPage = () => {
         Login
       </Typography>
       <Card sx={{ p: 2 }}>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmitClick}>
           <TextField
             placeholder='Institutional Email'
             fullWidth

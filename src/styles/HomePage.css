@@ -6,3 +6,13 @@
     left: -40%; /* Align the image to the left */
     top: -10%;
   }
+  .fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
