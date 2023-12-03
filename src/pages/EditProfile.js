@@ -3,11 +3,12 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { Divider } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import MyProfile from './MyProfile';
 import axios from 'axios';
 
 
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   
 const storedUserEmail = sessionStorage.getItem('userEmail');
 const storedUserID = sessionStorage.getItem('userID');
@@ -61,6 +62,11 @@ const handleUpdateUser = async () => {
 
     // Handle the response as needed
     console.log('User details updated successfully:', response.data);
+    // Reset state variables
+    setContactNumber('');
+    setOldPassword('');
+    setNewPassword('');
+    props.handleEditProfileModalClose();
   } catch (error) {
     console.error('Error updating user details', error);
   }
@@ -108,7 +114,7 @@ const isPasswordValid = () => {
 };
 const isContactNumberValid = () => {
   // Assuming the contact number is a string
-  return userData.contactNumber && userData.contactNumber.length === 11 && /^\d+$/.test(userData.contactNum);
+  return contactNumber && contactNumber.length === 11 && /^\d+$/.test(userData.contactNum);
 };
 
 const handleContactNumberChange = (e) => {

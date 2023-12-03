@@ -9,6 +9,7 @@ import NewRequest from './pages/NewRequest';
 import MyRequest from './pages/MyRequest';
 import Dashboard from './pages/Dashboard';
 import MyProfile from './pages/MyProfile';
+import EditProfile from './pages/EditProfile';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/my-request" element={<MyRequest/>} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/my-profile" element={<MyProfile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
       </div>
     </Router>
