@@ -27,7 +27,7 @@ const LoginPage = () => {
       if (response.status === 200) {
         // Store user email in sessionStorage
         sessionStorage.setItem('userEmail', email);
-        sessionStorage.setItem('userID', id);
+
         // Navigate to the home page
         navigate('/home');
       } else {
