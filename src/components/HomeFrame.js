@@ -126,7 +126,7 @@ const HomeFrame = () => {
               <ListItemIcon style={{ color: 'white' }}>
                 <ArticleOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="My Request" onClick={handleMyRequestClick}/>
+              <ListItemText primary="My Request" onCylick={handleMyRequestClick}/>
             </ListItem>
             <ListItem button onClick={handleLogoutClick}>
               <ListItemIcon style={{ color: 'white' }}>

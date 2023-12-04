@@ -44,7 +44,8 @@
   top: 254px;
   left: 289px;
   font-size: 18px;
-  line-height: 112.5%;
+  line-height: 1.5;
+  margin-left: 20px;
   display: inline-block;
   width: 932px;
   height: 67px;
@@ -219,7 +220,7 @@
 .about-us-page {
   position: relative;
   background-color: #fff;
-  width: 100%;
+  width: 100vw;
   height: 1024px;
   overflow: hidden;
   text-align: center;

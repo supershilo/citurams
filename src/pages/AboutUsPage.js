@@ -4,6 +4,9 @@ import "../styles/AboutUsPage.css";
 import NavBar from "../components/NavBar";
 
 // Functional component for the About Us page
+
+
+
 const AboutUsPage = () => {
   return (
     <div className="about-us-page">

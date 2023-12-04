@@ -25,7 +25,7 @@ const LandingPage = () => {
 
   return (
     <div style={containerStyle}>
-      <NavBar/>
+      <NavBar />
       <Container
         sx={{
           display: 'flex',
