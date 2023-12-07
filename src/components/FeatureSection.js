@@ -14,7 +14,7 @@ const features = [
     icon: LockClosedIcon,
   },
   {
-    name: 'Equipment Inventory Management:',
+    name: 'Equipment Inventory Management',
     description:
       'Effectively manage and update equipment details to maintain an organized inventory.',
     icon: ArrowPathIcon,
