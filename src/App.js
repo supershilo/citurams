@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -10,6 +11,21 @@ import MyRequest from "./pages/MyRequest";
 import Dashboard from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
 import EditProfile from "./pages/EditProfile";
+=======
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
+import './App.css';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage';
+import AboutUsPage from './pages/AboutUsPage';
+import NewRequest from './pages/NewRequest';
+import MyRequest from './pages/MyRequest';
+import Dashboard from './pages/Dashboard';
+import MyProfile from './pages/MyProfile';
+import EditProfile from './pages/EditProfile';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+>>>>>>> Stashed changes
 
 const App = () => {
   return (
@@ -25,6 +41,8 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
     </Router>

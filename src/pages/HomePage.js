@@ -62,6 +62,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const storedUserEmail = sessionStorage.getItem('userEmail');
+
   const [userData, setUserData] = useState(null);
 
 
