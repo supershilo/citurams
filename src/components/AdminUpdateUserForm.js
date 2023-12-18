@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { styled } from "@mui/system";
 import {
 	TextField,
@@ -34,9 +34,28 @@ const FormContainer = styled("div")({
 	marginTop: "35px",
 });
 
-const CreateUserForm = () => {
+const AdminUpdateUserForm = () => {
 	const [PasswordType, setPasswordType] = useState('password');
 	const [PasswordIcon, setPasswordIcon] = useState(() => <VisibilityOffIcon />);
+	const storedUserEmail = sessionStorage.getItem('userEmail');
+	const [userData, setUserData] = useState(null);
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+		  try {
+			const response = await axios.get(`http://localhost:8080/user/getUserData?email=${storedUserEmail}`);
+			setUserData(response.data); 
+			console.log(response.data.userID);
+	  
+		  } catch (error) {
+			console.error('Error fetching user data', error);
+		  }
+		};
+	
+		if (storedUserEmail) {
+		  fetchUserData();
+		}
+	  }, [storedUserEmail]);
     
 	const [formData, setFormData] = useState({
 		fname: "",
@@ -95,13 +114,13 @@ const CreateUserForm = () => {
 	
 		try {
 		  const response = await axios.post(
-			"http://localhost:8080/admin/createUser",
+			`http://localhost:8080/user/updateUser?userID=${userData.userID}`,
 			formData
 		  );
 		  console.log(response.data); // Log the response from the server
 		  window.location.reload();
 		} catch (error) {
-		  console.error("Error creating user:", error);
+		  console.error("Error updating user:", error);
 		  // Add logic to handle errors, e.g., displaying an error message
 		}
 	  };
@@ -115,7 +134,8 @@ const CreateUserForm = () => {
 		  setPasswordIcon(<VisibilityOffIcon />);
 		}
 		};
-	
+
+		  
 
 	return (
 		<div className="mb-4 -mt-10">
@@ -123,7 +143,7 @@ const CreateUserForm = () => {
 			<FormHeader>
 				<HeaderIcon />
 				<Typography variant="h5" component="div" sx={{ fontFamily: "Poppins" }}>
-					Create Account
+					Update User Account
 				</Typography>
 			</FormHeader>
 			<form onSubmit={handleSubmit}>
@@ -167,7 +187,7 @@ const CreateUserForm = () => {
 					type={PasswordType}
 					fullWidth
 					margin="dense"
-					variant="outlined"
+					variant="outlined" 
 					value={formData.password}
 					onChange={handleChange}
 					required
@@ -228,25 +248,25 @@ const CreateUserForm = () => {
 					type="submit"
 					variant="contained"
 					sx={{
-						marginTop: "10px", // Add margin to match the form fields
-						backgroundColor: "#FC3031",
-						fontSize: "15px",
-						fontFamily: "'Poppins', san-serif",
-						width: "100%",
-						padding: "10px",
-						color: "white",
-						textTransform: "capitalize",
-						"&:hover": {
-							backgroundColor: "#D83131",
-						},
+					marginTop: "10px", // Add margin to match the form fields
+					backgroundColor: "#FC3031",
+					fontSize: "15px",
+					fontFamily: "'Poppins', san-serif",
+					width: "100%",
+					padding: "10px",
+					color: "white",
+					textTransform: "capitalize",
+					"&:hover": {
+						backgroundColor: "#D83131",
+					},
 					}}
 				>
-					Create Account
-				</Button>
+					Update Account
+          </Button>
 			</form>
 		</FormContainer>
 		</div>
 	);
 };
 
-export default CreateUserForm;
+export default AdminUpdateUserForm;

@@ -11,13 +11,16 @@ import {
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 import axios from "axios";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [id, setID] = useState("");
-
+  const [PasswordType, setPasswordType] = useState('password');
+	const [PasswordIcon, setPasswordIcon] = useState(() => <VisibilityOffIcon />);
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -32,26 +35,15 @@ const LoginPage = () => {
       });
   
       if (response.status === 200) {
-<<<<<<< Updated upstream
-        // Store user email in sessionStorage
-        sessionStorage.setItem("userEmail", email);
-        // Navigate to the home page
-        navigate("/home");
-=======
-      // Assuming the server sends the user role in the response
       const userRole = response.data.role;
-      // Store user email and user ID in sessionStorage
       sessionStorage.setItem('userEmail', email);
       sessionStorage.setItem('userRole', userRole);
 
       if (userRole === 'admin') {
-        // Navigate to the admin page
         navigate('/admin-dashboard');
       } else {
-        // Navigate to the home page for regular users
         navigate('/home');
       }
->>>>>>> Stashed changes
       } else {
         setError("Authentication failed. Please check your credentials.");
       }
@@ -59,6 +51,17 @@ const LoginPage = () => {
       setError("Authentication failed. Please check your credentials");
     }
   };
+
+  const handlePasswordToggle = () => {
+		if (PasswordType === 'password') {
+		  setPasswordType('text');
+		  setPasswordIcon(<VisibilityIcon />);
+		} else {
+		  setPasswordType('password');
+		  setPasswordIcon(<VisibilityOffIcon />);
+		}
+		};
+	
   
 
   return (
@@ -87,7 +90,6 @@ const LoginPage = () => {
               marginBottom: "1.5rem",
               color: "#7D7C7C",
             }}
-<<<<<<< Updated upstream
           >
             Login
           </Typography>
@@ -110,7 +112,7 @@ const LoginPage = () => {
                 sx={{ maxWidth: 500 }}
               />
               <TextField
-                type="password"
+                type={PasswordType}
                 placeholder="Password"
                 fullWidth
                 value={password}
@@ -126,6 +128,7 @@ const LoginPage = () => {
                 }}
                 sx={{ maxWidth: 500, marginTop: 2 }}
               />
+              <span className="absolute -ml-8 mt-7 items-center" onClick={handlePasswordToggle}>{PasswordIcon}</span>
               {error && (
                 <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
                   {error}
@@ -145,7 +148,7 @@ const LoginPage = () => {
                 height: "50px",
                 backgroundColor: "#FC3031",
                 "&:hover": {
-                  backgroundColor: "#bd262a", // Change this to your desired hover color
+                  backgroundColor: "#bd262a", 
                 },
               }}
             >
@@ -153,40 +156,6 @@ const LoginPage = () => {
             </Button>
           </Card>
         </div>
-=======
-            sx={{ maxWidth: 500, marginTop: 2 }}
-          />
-          {error && (
-            <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
-              {error}
-            </Typography>
-          )}
-
-        </form>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={handleSubmitClick}
-          sx={{
-            fontFamily: "'Poppins', sans-serif",
-            fontSize: '18px',
-            marginTop: 2,
-            width: '100%',
-            height: '50px',
-            backgroundColor: '#FC3031',
-            '&:hover': {
-              backgroundColor: '#bd262a', 
-            },
-  }}
->
-  Log in
-</Button>
-
-      </Card>
-    </div>
-
->>>>>>> Stashed changes
       </div>
     </div>
   );

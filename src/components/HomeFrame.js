@@ -14,7 +14,7 @@ import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate } from 'react-router-dom';
-import { BiSolidDashboard } from "react-icons/bi";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import axios from 'axios';
 import { CSSTransition } from 'react-transition-group';
 
@@ -77,7 +77,10 @@ const HomeFrame = () => {
   const handleEditProfileClick = ()=>{
     navigate('/my-profile');
   }
-
+  function base64ToDataURL(base64String) {
+    return `data:image/png;base64,${base64String}`;
+  }
+  
   useEffect(() => {
     // Fetch user data when the component mounts
     const fetchUserData = async () => {
@@ -85,6 +88,7 @@ const HomeFrame = () => {
         // Make a GET request to your user details endpoint
         const response = await axios.get(`http://localhost:8080/user/getUserData?email=${storedUserEmail}`);
         setUserData(response.data); // Assuming the response contains user data
+        console.log('User Data Response:', response.data);
       } catch (error) {
         console.error('Error fetching user data', error);
       }
@@ -128,12 +132,12 @@ const HomeFrame = () => {
           {/* User Profile Section */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
             <div  onClick={handleEditProfileClick} style={{ cursor: 'pointer'}}>
-              <img
-                src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"  // Replace with the actual path to the profile image
-                alt="Profile"
-                className="rounded-full ring-4 ring-white"
-                style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
-              />
+            <img
+              src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
+              alt="Profile"
+              className="rounded-full ring-4 ring-white"
+              style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
+            />
             </div>
             {/* Use userData to display user name and email */}
             {userData && (
@@ -148,7 +152,7 @@ const HomeFrame = () => {
             {/* Add items for the navigation drawer */}
             <ListItem button>
               <ListItemIcon style={{ color: 'white' }}>
-              <BiSolidDashboard />
+              <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" onClick={handleDashboardClick} style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>

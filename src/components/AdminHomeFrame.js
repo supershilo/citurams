@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { styled } from "@mui/system";
 import {
 	AppBar,
@@ -16,6 +16,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import BusinessIcon from "@mui/icons-material/Business";
+import axios from 'axios';
 
 const drawerWidth = 300;
 
@@ -49,14 +50,16 @@ const DrawerPaper = styled("div")({
 });
 
 const AdminHomeFrame = () => {
+	const storedUserEmail = sessionStorage.getItem('userEmail');
+	const [userData, setUserData] = useState(null);
 	const navigate = useNavigate();
 
 	const handleLogoClick = () => {
-		navigate("/index");
+		navigate("/admin-dashboard");
 	};
 
 	const handleManageUserClick = () => {
-		navigate("/manage-user");
+		navigate("/manage-users");
 	};
 
 	const handleManageRequestClick = () => {
@@ -74,6 +77,30 @@ const AdminHomeFrame = () => {
 	const handleLogoutClick = () => {
 		navigate("/");
 	};
+
+	const handleEditProfileClick = ()=>{
+		navigate('/admin/my-profile');
+	  }
+	function base64ToDataURL(base64String) {
+		return `data:image/png;base64,${base64String}`;
+	  }
+
+	useEffect(() => {
+		// Fetch user data when the component mounts
+		const fetchUserData = async () => {
+		  try {
+			// Make a GET request to your user details endpoint
+			const response = await axios.get(`http://localhost:8080/user/getUserData?email=${storedUserEmail}`);
+			setUserData(response.data); // Assuming the response contains user data
+		  } catch (error) {
+			console.error('Error fetching user data', error);
+		  }
+		};
+	
+		if (storedUserEmail) {
+		  fetchUserData();
+		}
+	  }, [storedUserEmail]);
 
 	return (
 		<Root>
@@ -98,32 +125,24 @@ const AdminHomeFrame = () => {
 			{/* Left Drawer (Navigation Drawer) */}
 			<MainDrawer variant="permanent" component="nav" position="fixed">
 				<DrawerPaper>
-					{/* User Profile Section */}
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							alignItems: "center",
-							marginBottom: "20px",
-							marginTop: "10px",
-						}}
-					>
-						<div>
-							<img
-								src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" // Replace with the actual path to the profile image
-								alt="Profile"
-								className="rounded-full ring-4 ring-white"
-								style={{
-									borderRadius: "50%",
-									height: "70px",
-									width: "70px",
-									marginBottom: "10px",
-								}}
-							/>
-						</div>
-						<div className="text-white font-bold">Juan De La Cruz</div>
-						<div className="text-white ">juandelacruz@cit.edu</div>
-					</div>
+          {/* User Profile Section */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
+            <div  onClick={handleEditProfileClick} style={{ cursor: 'pointer'}}>
+            <img
+              src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
+              alt="Profile"
+              className="rounded-full ring-4 ring-white"
+              style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
+            />
+            </div>
+            {/* Use userData to display user name and email */}
+            {userData && (
+              <>
+                <div className='text-white font-bold'>{userData.fname +' ' +userData.lname}</div>
+                <div className='text-white '>{userData.email}</div>
+              </>
+            )}
+          </div>
 
 					<List>
 						<ListItem button>
@@ -141,7 +160,7 @@ const AdminHomeFrame = () => {
 								<AssignmentIcon />
 							</ListItemIcon>
 							<ListItemText
-								primary="Manage Request"
+								primary="Manage Requests"
 								onClick={handleManageRequestClick}
 								style={{ fontFamily: "'Poppins', sans-serif" }}
 							/>
@@ -152,7 +171,7 @@ const AdminHomeFrame = () => {
 									<PeopleIcon />
 								</ListItemIcon>
 								<ListItemText
-									primary="Manage User"
+									primary="Manage Users"
 									onClick={handleManageUserClick}
 								/>
 							</ListItem>

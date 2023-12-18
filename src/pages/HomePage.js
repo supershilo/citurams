@@ -19,7 +19,7 @@ import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate} from 'react-router-dom';
-import { BiSolidDashboard } from "react-icons/bi";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import '../styles/HomePage.css';
 import axios from 'axios';
 
@@ -62,7 +62,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const storedUserEmail = sessionStorage.getItem('userEmail');
-
   const [userData, setUserData] = useState(null);
 
 
@@ -90,13 +89,6 @@ const HomePage = () => {
     navigate('/my-profile');
   };
 
-  const handleProfileClick = () => {
-    setProfileModalOpen(true);
-  };
-
-  const handleProfileModalClose = () => {
-    setProfileModalOpen(false);
-  };
 
   useEffect(() => {
     // Fetch user data when the component mounts
@@ -115,7 +107,9 @@ const HomePage = () => {
     }
   }, [storedUserEmail]);
 
-  
+  function base64ToDataURL(base64String) {
+    return `data:image/png;base64,${base64String}`;
+  }
   return (
     <Root>
       {/* App Bar */}
@@ -140,7 +134,7 @@ const HomePage = () => {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
             <div onClick={handleMyProfileClick} style={{ cursor: 'pointer' }}>
               <img
-                src={userData?.profileImage || "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
                 alt="Profile"
                 className="rounded-full ring-4 ring-white"
                 style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
@@ -159,7 +153,7 @@ const HomePage = () => {
             {/* Add items for the navigation drawer */}
             <ListItem button onClick={handleDashboardClick}>
               <ListItemIcon style={{ color: 'white' }}>
-                <BiSolidDashboard />
+              <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>

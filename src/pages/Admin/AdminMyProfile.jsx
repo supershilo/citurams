@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Divider, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import HomeFrame from '../components/HomeFrame';
+import AdminHomeFrame from "../../components/AdminHomeFrame";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
+const AdminMyProfile = ({profilePhoto: initialProfilePhoto }) => {
   const navigate = useNavigate();
 
   const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [oldPasswordType, setOldPasswordType] = useState('password');
   const [oldPasswordIcon, setOldPasswordIcon] = useState(() => <VisibilityOffIcon />);
   const [newPasswordType, setNewPasswordType] = useState('password');
@@ -20,7 +23,6 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
   const [oldPassword, setOldPassword] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profilePhoto, setProfilePhoto] = useState(initialProfilePhoto);
-  const [userData, setUserData] = useState(null);
   const storedUserEmail = sessionStorage.getItem('userEmail');
 
 
@@ -45,8 +47,6 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
   const handleConfirmationDialogClose = () => {
     setConfirmationDialogOpen(false);
   };
-
-
   
   useEffect(() => {
     const fetchUserData = async () => {
@@ -106,7 +106,6 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
       });
       console.log('User details updated successfully:', response.data);
       handleEditProfileModalClose();
-      navigate('/my-profile');
       console.log(profileImage);
       console.log('Response:', response);
     } catch (error) {
@@ -167,6 +166,7 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
   const isContactNumberChanged = () => {
     return contactNumber !== userData.contactNum || contactNumber === '';
   };
+
   const isButtonDisabled = !isOldPasswordValid() || (isContactNumberChanged() && !isContactNumberValid()) || !isPasswordValid();
   function base64ToDataURL(base64String) {
     return `data:image/png;base64,${base64String}`;
@@ -175,7 +175,7 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
   return (
     <div className='mt-24 ml-64'>
     <div className='ml-40 mr-32'>
-      <HomeFrame/>
+      <AdminHomeFrame/>
   <div className="p-12">
   <div className="bg-gray-200 p-10 rounded-lg">
       <h2 className="text-2xl font-bold mb-4 flex justify-left">My Profile</h2>
@@ -402,10 +402,10 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
             </button>
             <button
               onClick={handleSaveChangesClick}
-              type="submit"
               disabled={isButtonDisabled}
-              style={{ cursor: isButtonDisabled ? 'not-allowed' : 'pointer' }}
+              type="submit"
               className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              style={{ cursor: isButtonDisabled ? 'not-allowed' : 'pointer' }}
             >
               Save Changes
             </button>
@@ -422,7 +422,7 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
                 <Button onClick={handleConfirmationDialogClose} color="primary">
                   Cancel
                 </Button>
-                <Button onClick={handleConfirmSaveChanges}  variant="contained" color="primary">
+                <Button onClick={handleConfirmSaveChanges} variant="contained" color="primary">
                   Confirm
                 </Button>
               </DialogActions>
@@ -434,4 +434,4 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
   );
 };
 
-export default MyProfile;
+export default AdminMyProfile;
