@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import HomeFrame from "../components/HomeFrame";
 import { Divider, Button } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import Stack from "@mui/material/Stack";
 import axios from "axios";
 
 const Dropdown = ({ label, options, selectedOption, onChange }) => {
@@ -55,6 +58,7 @@ const Dropdown = ({ label, options, selectedOption, onChange }) => {
         id={label}
         value={selectedOption}
         onChange={onChange}
+        required
       >
         {renderedOptions}
       </select>
@@ -75,6 +79,12 @@ const NewRequest = () => {
   const [buildingName, setBuildingName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [loggedID, setLoggedID] = useState(0);
+  const [isBuildingSelected, setIsBuildingSelected] = useState(false);
+  const [isRoomSelected, setIsRoomSelected] = useState(false);
+  const [isEquipmentSelected, setIsEquipmentSelected] = useState(false);
+  const [isMessageSelected, setIsMessageSelected] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   //fetching buildings from api
   useEffect(() => {
@@ -155,7 +165,7 @@ const NewRequest = () => {
     fetchEquipments();
     fetchId();
     fetchFullname();
-  }, []);
+  }, [isSubmit]);
 
   //fetch room
   useEffect(() => {
@@ -239,22 +249,27 @@ const NewRequest = () => {
       setRoom([]);
       setSelectedBuilding("");
       setSelectedRoom("");
+      setIsBuildingSelected(false);
     } else {
       setSelectedBuilding(selectedValue);
       setSelectedRoom("");
+      setIsBuildingSelected(true);
     }
   }
 
   function handleChangeRoom(event) {
     setSelectedRoom(event.target.value);
+    setIsRoomSelected(!!event.target.value);
   }
 
   function handleChangeEquipment(event) {
     setSelectedEquipment(event.target.value);
+    setIsEquipmentSelected(!!event.target.value);
   }
 
   function handleChangeMessage(event) {
     setMessage(event.target.value);
+    setIsMessageSelected(!!event.target.value.trim());
   }
 
   function handleSubmit(event) {
@@ -273,42 +288,60 @@ const NewRequest = () => {
 
     const currentDateTime = getCurrentDateTime();
 
-    const request = {
-      userName: fullname,
-      building: buildingName,
-      room: roomName,
-      equipment: selectedEquipment,
-      message: message,
-      date: currentDateTime,
-      reqUserID: loggedID,
-    };
+    if (
+      isBuildingSelected &&
+      isRoomSelected &&
+      isEquipmentSelected &&
+      isMessageSelected
+    ) {
+      const request = {
+        userName: fullname,
+        building: buildingName,
+        room: roomName,
+        equipment: selectedEquipment,
+        message: message,
+        date: currentDateTime,
+        reqUserID: loggedID,
+      };
 
-    axios
-      .post("http://localhost:8080/request/createRequest", request)
-      .then((response) => {
-        // Handle success
-        console.log("Request posted successfully!", response.data);
-        // Reset form fields or perform any other actions
-        setBuilding([]);
-        setRoom([]);
-        setEquipment([]);
-        setMessage("");
-        setSelectedBuilding("");
-        setSelectedRoom("");
-        setBuildingName("");
-        setRoomName("");
-        setLoggedID(0);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error("Error posting request:", error);
-      });
+      axios
+        .post("http://localhost:8080/request/createRequest", request)
+        .then((response) => {
+          // Handle success
+          console.log("Request posted successfully!", response.data);
+          // Reset form fields or perform any other actions
+          setBuilding([]);
+          setRoom([]);
+          setEquipment([]);
+          setMessage("");
+          setSelectedBuilding("");
+          setSelectedRoom("");
+          setBuildingName("");
+          setRoomName("");
+          setLoggedID(0);
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Error posting request:", error);
+        });
+      setIsSubmit(true);
+    } else {
+      setShowErrorAlert(true);
+
+      // Hide the error alert after 4 seconds
+      setTimeout(() => {
+        setShowErrorAlert(false);
+      }, 3000);
+    }
   }
 
-  // // Use useEffect to observe changes in the request state
-  // useEffect(() => {
-  //   console.log("Request State:", request);
-  // }, [request]);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setIsSubmit(false);
+  };
 
   return (
     <div>
@@ -325,7 +358,19 @@ const NewRequest = () => {
                     </h2>
                     <Divider />
                     <hr />
-                    <div className="flex justify-center items-center mt-8">
+                    {showErrorAlert && (
+                      <>
+                        <Stack sx={{ width: "100%", marginTop: 2 }} spacing={2}>
+                          <Alert severity="error">
+                            Please fill in all required fields!
+                          </Alert>
+                        </Stack>
+                      </>
+                    )}
+                    <div
+                      style={{ marginTop: "22px" }}
+                      className="flex justify-center items-center mt-8"
+                    >
                       <Dropdown
                         label="Building"
                         options={building}
@@ -363,21 +408,37 @@ const NewRequest = () => {
                         ></textarea>
                       </div>
                       <div className="mt-2 mr-4 flex justify-end">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={handleSubmit}
-                          sx={{
-                            fontFamily: "'Poppins', sans-serif",
-                            marginTop: 2,
-                            backgroundColor: "#FC3031",
-                            "&:hover": {
-                              backgroundColor: "#bd262a", // Change this to your desired hover color
-                            },
-                          }}
-                        >
-                          SUBMIT
-                        </Button>
+                        <Stack spacing={2} sx={{ width: "10%", marginTop: 1 }}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSubmit}
+                            sx={{
+                              fontFamily: "'Poppins', sans-serif",
+                              marginTop: 2,
+                              backgroundColor: "#FC3031",
+                              "&:hover": {
+                                backgroundColor: "#bd262a", // Change this to your desired hover color
+                              },
+                            }}
+                          >
+                            SUBMIT
+                          </Button>
+
+                          <Snackbar
+                            open={isSubmit}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                          >
+                            <Alert
+                              onClose={handleClose}
+                              severity="success"
+                              sx={{ width: "100%" }}
+                            >
+                              Request Submitted Successfully!
+                            </Alert>
+                          </Snackbar>
+                        </Stack>
                       </div>
                     </div>
                   </div>

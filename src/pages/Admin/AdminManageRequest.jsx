@@ -1,10 +1,9 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/system";
-import HomeFrame from "../components/HomeFrame";
-import HomePage from "./HomePage";
+import HomeFrame from "../../components/HomeFrame";
+import HomePage from "../HomePage";
 import { CSSTransition } from "react-transition-group";
-import RequestCard from "../components/RequestCard";
+import RequestCard from "../../components/RequestCard";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -18,14 +17,22 @@ const Root = styled("div")(({ theme }) => ({
   transition: "opacity 5s ease", // Apply transition to opacity
 }));
 
-const MyRequest = () => {
+const AdminManageRequest = () => {
   const [ongoingRequestList, setOngoingRequestList] = useState([]);
   const [resolvedRequestList, setResolvedRequestList] = useState([]);
+  const [allRequest, setAllRequest] = useState([]);
   const [value, setValue] = useState(0);
   const storedEmail = sessionStorage.getItem("userEmail");
-  const [loggedID, setLoggedID] = useState(0);
   const [role, setRole] = useState("");
+  const [loggedID, setLoggedID] = useState(0);
+  const [isUpdated, setIsUpdated] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+
+  //update states
+  const inputStaff = useRef();
+  const inputStatus = useRef();
+  const inputRemarks = useRef();
+  const [adminFullname, setAdminFullname] = useState("");
 
   //fetch role by email
   useEffect(() => {
@@ -35,7 +42,6 @@ const MyRequest = () => {
           `http://localhost:8080/user/getRole/${storedEmail}`
         );
         setRole(response.data);
-        console.log(response.data);
       } catch (err) {
         if (err.response) {
           //not in 200 response range
@@ -51,17 +57,17 @@ const MyRequest = () => {
     fetchRole();
   }, []);
 
-  //fetch ongoing request from api
+  //fetching Admin name
   useEffect(() => {
-    const fetchRequests = async () => {
+    const fetchAdminFullname = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/request/getAllOngoingRequest"
+          `http://localhost:8080/user/getUserName/${storedEmail}`
         );
-        setOngoingRequestList(response.data);
+        setAdminFullname(response.data);
       } catch (err) {
+        //not in 200 response range
         if (err.response) {
-          //not in 200 response range
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
@@ -71,31 +77,8 @@ const MyRequest = () => {
       }
     };
 
-    fetchRequests();
-  }, [isDeleted]);
-
-  //fetch resolved request from api
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/request/getAllResolvedRequest"
-        );
-        setResolvedRequestList(response.data);
-      } catch (err) {
-        if (err.response) {
-          //not in 200 response range
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else {
-          console.log(`Error: ${err.message}`);
-        }
-      }
-    };
-
-    fetchRequests();
-  }, [isDeleted]);
+    fetchAdminFullname();
+  }, [storedEmail]);
 
   //fetch userID by email
   useEffect(() => {
@@ -120,39 +103,123 @@ const MyRequest = () => {
     fetchId();
   }, []);
 
-  //filter ongoing request list
-  const filteredOngoingRequestList = ongoingRequestList.filter(
-    (request, index) => {
-      return request.reqUserID === loggedID;
+  //fetch all ongoing request from api
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/request/getAllOngoingRequest"
+        );
+        setOngoingRequestList(response.data);
+      } catch (err) {
+        if (err.response) {
+          //not in 200 response range
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else {
+          console.log(`Error: ${err.message}`);
+        }
+      }
+    };
+
+    fetchRequests();
+  }, [isUpdated, isDeleted]);
+
+  //fetch all resolved request from api
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/request/getAllResolvedRequest"
+        );
+        setResolvedRequestList(response.data);
+      } catch (err) {
+        if (err.response) {
+          //not in 200 response range
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else {
+          console.log(`Error: ${err.message}`);
+        }
+      }
+    };
+
+    fetchRequests();
+  }, [isUpdated, isDeleted]);
+
+  //fetch all request
+  useEffect(() => {
+    const fetchAllRequest = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/request/getAllRequest`
+        );
+        setAllRequest(response.data);
+      } catch (err) {
+        if (err.response) {
+          //not in 200 response range
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else {
+          console.log(`Error: ${err.message}`);
+        }
+      }
+    };
+
+    fetchAllRequest();
+  }, []);
+
+  //update request
+  const handleUpdateRequest = async (reqID) => {
+    try {
+      const id = reqID;
+      //fetch existing request data
+      const response = await axios.get(
+        `http://localhost:8080/request/getRequest/${id}`
+      );
+      const existingRequestData = response.data;
+
+      const getCurrentDateTime = () => {
+        return new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        });
+      };
+
+      const currentDateTime = getCurrentDateTime();
+
+      const inputtedStaff = inputStaff.current.value;
+      const inputtedStatus = inputStatus.current.value;
+      const inputtedRemarks = inputRemarks.current.value;
+
+      const updatedRequestData = {
+        ...existingRequestData,
+        adminName: adminFullname,
+        remarked: true,
+        remarksDateTime: currentDateTime,
+        staff: inputtedStaff,
+        status: inputtedStatus,
+        remarksMsg: inputtedRemarks,
+      };
+
+      const updateResponse = await axios.put(
+        `http://localhost:8080/request/updateRequest?id=${id}`,
+        updatedRequestData
+      );
+
+      handleUpdated();
+      console.log("Request updated successfully:", updateResponse.data);
+    } catch (err) {
+      console.error("Error updating request:", err);
     }
-  );
-
-  //filter resolved request list
-  const filterResolvedRequestList = resolvedRequestList.filter(
-    (request, index) => {
-      return request.reqUserID === loggedID;
-    }
-  );
-
-  function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
+  };
 
   //delete request
   const handleDeleteRequest = async (reqID) => {
@@ -182,11 +249,39 @@ const MyRequest = () => {
     }
   };
 
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
   CustomTabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
   };
+
+  function handleUpdated() {
+    setIsUpdated(!isUpdated);
+  }
+
+  function handleDeleted() {
+    setIsDeleted(!isDeleted);
+  }
 
   function a11yProps(index) {
     return {
@@ -198,10 +293,6 @@ const MyRequest = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  function handleDeleted() {
-    setIsDeleted((prevDeleted) => !prevDeleted);
-  }
 
   return (
     <CSSTransition
@@ -226,7 +317,7 @@ const MyRequest = () => {
                 </Tabs>
               </Box>
               <CustomTabPanel value={value} index={0}>
-                {filteredOngoingRequestList.map((request, index) => {
+                {ongoingRequestList.map((request, index) => {
                   return (
                     <RequestCard
                       key={index}
@@ -238,19 +329,23 @@ const MyRequest = () => {
                       status={request.status}
                       staff={request.staff}
                       date={request.date}
-                      remarksDateTime={request.remarksDateTime}
                       admin={request.adminName}
-                      remarksMsg={request.remarksMsg}
+                      isRemarked={request.remarked}
                       role={role}
                       reqID={request.requestID}
-                      isRemarked={request.remarked}
+                      remarksDateTime={request.remarksDateTime}
+                      remarkMsg={request.remarkMsg}
+                      onUpdate={handleUpdateRequest}
                       onDelete={handleDeleteRequest}
+                      inputStaff={inputStaff}
+                      inputStatus={inputStatus}
+                      inputRemarks={inputRemarks}
                     />
                   );
                 })}
               </CustomTabPanel>
               <CustomTabPanel value={value} index={1}>
-                {filterResolvedRequestList.map((request, index) => {
+                {resolvedRequestList.map((request, index) => {
                   return (
                     <RequestCard
                       key={index}
@@ -262,13 +357,16 @@ const MyRequest = () => {
                       status={request.status}
                       staff={request.staff}
                       date={request.date}
-                      remarksDateTime={request.remarksDateTime}
                       admin={request.adminName}
+                      isRemarked={request.remarked}
                       role={role}
                       reqID={request.requestID}
-                      remarksMsg={request.remarksMsg}
-                      isRemarked={request.remarked}
+                      remarksDateTime={request.remarksDateTime}
+                      onUpdate={handleUpdateRequest}
                       onDelete={handleDeleteRequest}
+                      inputStaff={inputStaff}
+                      inputStatus={inputStatus}
+                      inputRemarks={inputRemarks}
                     />
                   );
                 })}
@@ -281,4 +379,4 @@ const MyRequest = () => {
   );
 };
 
-export default MyRequest;
+export default AdminManageRequest;
