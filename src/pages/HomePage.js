@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/system';
 import {
   AppBar,
@@ -9,16 +10,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
 } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate} from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import '../styles/HomePage.css';
 import axios from 'axios';
@@ -60,43 +55,15 @@ const transitionClass = {
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const storedUserEmail = sessionStorage.getItem('userEmail');
   const [userData, setUserData] = useState(null);
 
 
-  const handleLogoClick = () => {
-    navigate('/home');
-  };
-
-  const handleNewRequestClick = () => {
-    navigate('/new-request');
-  };
-
-  const handleMyRequestClick = () => {
-    navigate('/my-request');
-  };
-
-  const handleDashboardClick = () => {
-    navigate('/dashboard');
-  };
-
-  const handleLogoutClick = () => {
-    navigate('/');
-  };
-
-  const handleMyProfileClick = () => {
-    navigate('/my-profile');
-  };
-
-
   useEffect(() => {
-    // Fetch user data when the component mounts
     const fetchUserData = async () => {
       try {
-        // Make a GET request to your user details endpoint
         const response = await axios.get(`http://localhost:8080/user/getUserData?email=${storedUserEmail}`);
-        setUserData(response.data); // Assuming the response contains user data
+        setUserData(response.data); 
       } catch (error) {
         console.error('Error fetching user data', error);
       }
@@ -116,12 +83,13 @@ const HomePage = () => {
       <MainAppBar position="fixed" sx={{ backgroundColor: 'white', color: 'white' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <div>
-            <img
-              src="/LoginPage/CITURAMS.png"
-              alt="Logo"
-              onClick={handleLogoClick}
-              style={{ height: '55px', cursor: 'pointer' }}
-            />
+            <Link to="/home">
+              <img
+                src="/LoginPage/CITURAMS.png"
+                alt="Logo"
+                style={{ height: '55px', cursor: 'pointer' }}
+              />
+          </Link>
           </div>
         </Toolbar>
       </MainAppBar>
@@ -132,7 +100,8 @@ const HomePage = () => {
         <DrawerPaper>
           {/* User Profile Section */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
-            <div onClick={handleMyProfileClick} style={{ cursor: 'pointer' }}>
+          <Link to="/my-profile" style={{ textDecoration: 'none' }}>
+            <div style={{ cursor: 'pointer' }}>
               <img
                 src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
                 alt="Profile"
@@ -140,6 +109,7 @@ const HomePage = () => {
                 style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
               />
             </div>
+          </Link>
             {/* Use userData to display user name and email */}
             {userData && (
               <>
@@ -151,25 +121,25 @@ const HomePage = () => {
 
           <List>
             {/* Add items for the navigation drawer */}
-            <ListItem button onClick={handleDashboardClick}>
+            <ListItem component={Link} to="/dashboard" button>
               <ListItemIcon style={{ color: 'white' }}>
-              <DashboardIcon />
+                <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
-            <ListItem button onClick={handleNewRequestClick}>
+            <ListItem component={Link} to="/new-request" button>
               <ListItemIcon style={{ color: 'white' }}>
                 <PostAddOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="New Request" style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
-            <ListItem button onClick={handleMyRequestClick} style={{ marginBottom: '150px' }}>
+            <ListItem component={Link} to="/my-request" button style={{ marginBottom: '150px' }}>
               <ListItemIcon style={{ color: 'white' }}>
                 <ArticleOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="My Request" />
             </ListItem>
-            <ListItem button onClick={handleLogoutClick}>
+            <ListItem component={Link} to="/logout" button>
               <ListItemIcon style={{ color: 'white' }}>
                 <LogoutIcon />
               </ListItemIcon>

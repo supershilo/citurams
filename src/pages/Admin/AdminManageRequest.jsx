@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/system";
-import HomeFrame from "../../components/HomeFrame";
-import HomePage from "../HomePage";
+import AdminHomeFrame from "../../components/AdminHomeFrame";
 import { CSSTransition } from "react-transition-group";
 import RequestCard from "../../components/RequestCard";
 import Tabs from "@mui/material/Tabs";
@@ -302,7 +301,7 @@ const AdminManageRequest = () => {
       classNames="fade" // CSS class prefix for transition styles
     >
       <div>
-        <HomeFrame />
+        <AdminHomeFrame />
         <div className="mt-24 ml-64">
           <div className="ml-16">
             <Box sx={{ width: "100%" }}>

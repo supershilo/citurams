@@ -11,7 +11,7 @@ import Dashboard from './pages/Dashboard';
 import MyProfile from './pages/MyProfile';
 import EditProfile from './pages/EditProfile';
 import AdminDashboard from './pages/Admin/AdminDashboard';
-import AdminManageRequests from './pages/Admin/ManageRequest';
+import AdminManageRequest from './pages/Admin/AdminManageRequest';
 import AdminManageUsers from './pages/Admin/AdminManageUsers';
 import AdminManageFacilities from './pages/Admin/AdminManageFacilities';
 import AdminCreateUser from './pages/Admin/AdminCreateUser';
@@ -36,7 +36,7 @@ const App = () => {
           
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin/my-profile" element={<AdminMyProfile />} />
-          <Route path="/manage-request" element={<AdminManageRequests />} />
+          <Route path="/manage-request" element={<AdminManageRequest />} />
           <Route path="/manage-users" element={<AdminManageUsers />} />
           <Route path="/manage-facilities" element={<AdminManageFacilities />} />
           <Route path="/manage-users/create-user" element={<AdminCreateUser />} />

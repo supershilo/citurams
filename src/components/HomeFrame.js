@@ -13,7 +13,8 @@ import {
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import axios from 'axios';
 import { CSSTransition } from 'react-transition-group';
@@ -52,31 +53,9 @@ const DrawerPaper = styled('div')({
 });
 
 const HomeFrame = () => {
-  const navigate = useNavigate();
+  const location = useLocation(); 
   const storedUserEmail = sessionStorage.getItem('userEmail');
   const [userData, setUserData] = useState(null);
-
-  const handleLogoClick = () => {
-    navigate('/home');
-  };
-
-  const handleNewRequestClick = () => {
-    navigate('/new-request');
-  };
-
-  const handleMyRequestClick = () => {
-    navigate('/my-request');
-  };
-
-  const handleDashboardClick = () => {
-    navigate('/dashboard');
-  };
-  const handleLogoutClick = () => {
-    navigate('/');
-  };
-  const handleEditProfileClick = ()=>{
-    navigate('/my-profile');
-  }
   function base64ToDataURL(base64String) {
     return `data:image/png;base64,${base64String}`;
   }
@@ -112,12 +91,13 @@ const HomeFrame = () => {
       <MainAppBar position="fixed" sx={{ backgroundColor: 'white', color: 'white' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end'  }}>
           <div>
-            <img
-              src="/LoginPage/CITURAMS.png"
-              alt="Logo"
-              onClick={handleLogoClick}
-              style={{ height: '55px', cursor: 'pointer' }}
-            />
+          <Link to="/home">
+              <img
+                src="/LoginPage/CITURAMS.png"
+                alt="Logo"
+                style={{ height: '55px', cursor: 'pointer' }}
+              />
+          </Link>
           </div>
 
         </Toolbar>
@@ -131,14 +111,16 @@ const HomeFrame = () => {
         <DrawerPaper>
           {/* User Profile Section */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
-            <div  onClick={handleEditProfileClick} style={{ cursor: 'pointer'}}>
-            <img
-              src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
-              alt="Profile"
-              className="rounded-full ring-4 ring-white"
-              style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
-            />
+          <Link to="/my-profile" style={{ textDecoration: 'none' }}>
+            <div style={{ cursor: 'pointer' }}>
+              <img
+                src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
+                alt="Profile"
+                className="rounded-full ring-4 ring-white"
+                style={{ borderRadius: '50%', height: '70px', width: '70px', marginBottom: '10px' }}
+              />
             </div>
+          </Link>
             {/* Use userData to display user name and email */}
             {userData && (
               <>
@@ -150,25 +132,25 @@ const HomeFrame = () => {
 
           <List>
             {/* Add items for the navigation drawer */}
-            <ListItem button>
+            <ListItem component={Link} to="/dashboard">
               <ListItemIcon style={{ color: 'white' }}>
-              <DashboardIcon />
+                <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Dashboard" onClick={handleDashboardClick} style={{ fontFamily: "'Poppins', sans-serif" }} />
+              <ListItemText primary="Dashboard" style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
-            <ListItem button>
+            <ListItem component={Link} to="/new-request">
               <ListItemIcon style={{ color: 'white' }}>
                 <PostAddOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="New Request" onClick={handleNewRequestClick} style={{ fontFamily: "'Poppins', sans-serif" }} />
+              <ListItemText primary="New Request" style={{ fontFamily: "'Poppins', sans-serif" }} />
             </ListItem>
-            <ListItem button style={{ marginBottom: '150px' }}>
+            <ListItem component={Link} to="/my-request" style={{ marginBottom: '150px' }}>
               <ListItemIcon style={{ color: 'white' }}>
                 <ArticleOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="My Request" onClick={handleMyRequestClick}/>
+              <ListItemText primary="My Request" />
             </ListItem>
-            <ListItem button onClick={handleLogoutClick}>
+            <ListItem component={Link} to="/">
               <ListItemIcon style={{ color: 'white' }}>
                 <LogoutIcon />
               </ListItemIcon>
