@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import GroupIcon from '@mui/icons-material/Group';
 import { styled } from "@mui/system";
 import {
 	AppBar,
@@ -57,23 +58,21 @@ const AdminHomeFrame = () => {
 	const handleLogoClick = () => {
 		navigate("/admin-dashboard");
 	};
-
 	const handleManageUserClick = () => {
 		navigate("/manage-users");
 	};
-
+    const handleManageStaffClick = () => {
+	     navigate("/manage-staff")	
+	};
 	const handleManageRequestClick = () => {
 		navigate("/manage-request");
 	};
-
 	const handleDashboardClick = () => {
 		navigate("/admin-dashboard");
 	};
-
 	const handleManageFacilitiesClick = () => {
 		navigate("/manage-facilities");
 	};
-
 	const handleLogoutClick = () => {
 		navigate("/");
 	};
@@ -81,6 +80,7 @@ const AdminHomeFrame = () => {
 	const handleEditProfileClick = ()=>{
 		navigate('/admin/my-profile');
 	  }
+	  
 	function base64ToDataURL(base64String) {
 		return `data:image/png;base64,${base64String}`;
 	  }
@@ -173,6 +173,15 @@ const AdminHomeFrame = () => {
 								<ListItemText
 									primary="Manage Users"
 									onClick={handleManageUserClick}
+								/>
+							</ListItem>
+							<ListItem button>
+								<ListItemIcon style={{ color: "white" }}>
+								<GroupIcon />
+								</ListItemIcon>
+								<ListItemText
+								primary="Manage Staff"
+								onClick={handleManageStaffClick}
 								/>
 							</ListItem>
 							<ListItem button>

@@ -13,9 +13,11 @@ import EditProfile from './pages/EditProfile';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminManageRequests from './pages/Admin/ManageRequest';
 import AdminManageUsers from './pages/Admin/AdminManageUsers';
+import AdminManageStaff from './pages/Admin/AdminManageStaff';
 import AdminManageFacilities from './pages/Admin/AdminManageFacilities';
 import AdminCreateUser from './pages/Admin/AdminCreateUser';
 import AdminMyProfile from './pages/Admin/AdminMyProfile';
+import AdminCreateStaff from './pages/Admin/AdminCreateStaff';
 
 
 const App = () => {
@@ -38,8 +40,11 @@ const App = () => {
           <Route path="/admin/my-profile" element={<AdminMyProfile />} />
           <Route path="/manage-request" element={<AdminManageRequests />} />
           <Route path="/manage-users" element={<AdminManageUsers />} />
+          <Route path="/manage-staff" element={<AdminManageStaff />} />
           <Route path="/manage-facilities" element={<AdminManageFacilities />} />
           <Route path="/manage-users/create-user" element={<AdminCreateUser />} />
+          <Route path="/manage-staff/create-staff" element={<AdminCreateStaff/>} />
+          
 
         </Routes>
       </div>
