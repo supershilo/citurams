@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Divider, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
 import HomeFrame from '../components/HomeFrame';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -229,7 +231,7 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
             marginTop: 2,
             backgroundColor: '#FC3031',
             '&:hover': {
-              backgroundColor: '#bd262a', // Change this to your desired hover color
+              backgroundColor: '#bd262a', 
             },
   }}>
             Edit Profile
@@ -244,7 +246,6 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
         <DialogContent>
         <div className="w-full flex items-center justify-center">
           <div className="p-8 mr-8 flex flex-col items-center">
-        {/*<UserCircleIcon className="h-40 w-40 text-gray-300" aria-hidden="true" />*/}
         <div>
           <input
             type="file"
@@ -414,18 +415,37 @@ const MyProfile = ({profilePhoto: initialProfilePhoto }) => {
     </Dialog>
             {/* Confirmation Dialog */}
             <Dialog open={isConfirmationDialogOpen} onClose={handleConfirmationDialogClose}>
-              <DialogTitle>Confirm Save Changes</DialogTitle>
-              <DialogContent>
-                Are you sure you want to apply these changes?
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleConfirmationDialogClose} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={handleConfirmSaveChanges}  variant="contained" color="primary">
-                  Confirm
-                </Button>
-              </DialogActions>
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-md w-96 h-40">
+            
+            <div className="bg-red-500 p-2 font-bold text-lg text-white rounded-t-lg">
+            <FontAwesomeIcon
+          icon={faExclamationCircle}
+          className="mr-2 w-5 h-5"
+          style={{ color: 'white', fontSize: '1rem', cursor: 'pointer' }}
+        />Confirm Save Changes</div>
+
+            <div className="p-4">
+            <p className="mb-6">Are you sure you want to apply these changes?</p>
+            <Divider/>
+            <div className="mt-2 mb-4 flex justify-end">
+              <button
+                className="bg-red-500 text-white px-3 py-1 w-auto rounded mr-2"
+                onClick={handleConfirmSaveChanges}
+              >
+                Confirm
+              </button>
+              <button
+                className="bg-gray-300 text-gray-700 px-3 w-auto py-1 rounded"
+                onClick={handleConfirmationDialogClose}
+              >
+                Cancel
+              </button>
+            </div>
+            </div>
+          </div>
+        </div>
+
             </Dialog>
     </div>
   </div>

@@ -27,7 +27,8 @@ const LoginPage = () => {
     navigate("/");
   };
 
-  const handleSubmitClick = async () => {
+  const handleSubmitClick = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post("http://localhost:8080/user/login", {
         email: email,
@@ -37,11 +38,13 @@ const LoginPage = () => {
       if (response.status === 200) {
       const userRole = response.data.role;
       sessionStorage.setItem('userEmail', email);
-      sessionStorage.setItem('userRole', userRole);
+      
 
       if (userRole === 'admin') {
+   
         navigate('/admin-dashboard');
       } else {
+        console.log("user")
         navigate('/home');
       }
       } else {
@@ -93,7 +96,7 @@ const LoginPage = () => {
           >
             Login
           </Typography>
-          <Card sx={{ p: 2 }}>
+          <Card sx={{ maxWidth: 500 ,p: 2 }}>
             <form onSubmit={handleSubmitClick}>
               <TextField
                 placeholder="Institutional Email"
@@ -109,7 +112,7 @@ const LoginPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                sx={{ maxWidth: 500 }}
+                sx={{ maxWidth: 1000 }}
               />
               <TextField
                 type={PasswordType}
@@ -126,7 +129,7 @@ const LoginPage = () => {
                     </InputAdornment>
                   ),
                 }}
-                sx={{ maxWidth: 500, marginTop: 2 }}
+                sx={{ maxWidth: 1000, marginTop: 2 }}
               />
               <span className="absolute -ml-8 mt-7 items-center" onClick={handlePasswordToggle}>{PasswordIcon}</span>
               {error && (
@@ -134,8 +137,7 @@ const LoginPage = () => {
                   {error}
                 </Typography>
               )}
-            </form>
-            <Button
+                <Button
               type="submit"
               variant="contained"
               color="primary"
@@ -154,6 +156,8 @@ const LoginPage = () => {
             >
               Log in
             </Button>
+            </form>
+          
           </Card>
         </div>
       </div>

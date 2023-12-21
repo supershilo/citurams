@@ -11,107 +11,103 @@ import AdminHomeFrame from "../../components/AdminHomeFrame";
 import axios from "axios";
 import { Divider } from "@mui/material";
 
-const AdminManageUsers = () => {
+const AdminManageStaff = () => {
   const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [staff, setStaff] = useState([]);
+  const [filteredStaff, setFilteredStaff] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeRow, setActiveRow] = useState(null);
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
+  const [staffToDelete, setStaffToDelete] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
+  const [editingStaff, setEditingStaff] = useState(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchStaff = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/user/getAllUsers");
-        setUsers(response.data);
-        setFilteredUsers(response.data);
+        const response = await axios.get("http://localhost:8080/staff/getAllStaff");
+        setStaff(response.data);
+        setFilteredStaff(response.data);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching staffs:", error);
       }
     };
 
-    fetchUsers();
+    fetchStaff();
   }, []);
 
-  const handleDeleteUser = (userId) => {
-    toggleConfirmationDialog(userId);
+  const handleDeleteStaff = (staffId) => {
+    toggleConfirmationDialog(staffId);
   };
 
-
-  const toggleConfirmationDialog = (userId = null) => {
-    setUserToDelete(userId);
+  const toggleConfirmationDialog = (staffId = null) => {
+    setStaffToDelete(staffId);
     setShowConfirmationDialog(!showConfirmationDialog);
   };
 
-  const confirmDeleteUser = async () => {
+  const confirmDeleteStaff = async () => {
     try {
-      await axios.delete(`http://localhost:8080/user/deleteUser/${userToDelete}`);
-      const updatedUsers = await axios.get("http://localhost:8080/user/getAllUsers");
-      setUsers(updatedUsers.data);
-      setFilteredUsers(updatedUsers.data);
-      toggleConfirmationDialog(); 
-
+      await axios.delete(`http://localhost:8080/staff/deleteStaff/${staffToDelete}`);
+      const updatedStaff = await axios.get("http://localhost:8080/staff/getAllStaff");
+      setStaff(updatedStaff.data);
+      setFilteredStaff(updatedStaff.data);
+      toggleConfirmationDialog(); // Hide the confirmation dialog
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error deleting staff:", error);
     }
   };
 
-  const handleEditUser = (userId) => {
-    const userToEdit = users.find((user) => user.userID === userId);
-    //console.log(userToEdit.userID);
-    setEditingUser(userToEdit);
+  const handleEditStaff = (staffId) => {
+    const staffToEdit = staff.find((staff) => staff.staffID === staffId);
+    console.log(staffToEdit);
+    setEditingStaff(staffToEdit);
     setShowEditModal(true);
   };
-  
-  const handleSelectRow = (userID) => {
-    if (activeRow === userID) {
+
+  const handleSelectRow = (staffID) => {
+    if (activeRow === staffID) {
       setActiveRow(null);
     } else {
-      setActiveRow(userID);
+      setActiveRow(staffID);
     }
   };
 
-  const handleCreateUserClick = () => {
-    navigate("/manage-users/create-user");
+  const handleCreateStaffClick = () => {
+    navigate("/manage-staff/create-staff");
   };
 
+  const handleStatusFilter = (status) => {
+    setSelectedStatus(status);
 
-  const handleRoleFilter = (role) => {
-    setSelectedRole(role);
-
-    if (role === "") {
-      setFilteredUsers(users);
+    if (status === "") {
+      setFilteredStaff(staff);
     } else {
-      const filtered = users.filter((user) => user.role === role);
-      setFilteredUsers(filtered);
+      const filtered = staff.filter((staff) => staff.status === status);
+      setFilteredStaff(filtered);
     }
   };
 
   const handleSearch = () => {
     const searchTermLowerCase = searchTerm.toLowerCase();
-    const filtered = users.filter(
-      (user) =>
-        user.fname.toLowerCase().includes(searchTermLowerCase) ||
-        user.lname.toLowerCase().includes(searchTermLowerCase) ||
-        user.email.toLowerCase().includes(searchTermLowerCase) ||
-        user.department.toLowerCase().includes(searchTermLowerCase) ||
-        user.position.toLowerCase().includes(searchTermLowerCase)
+    const filtered = staff.filter(
+      (staff) =>
+        staff.fname.toLowerCase().includes(searchTermLowerCase) ||
+        staff.lname.toLowerCase().includes(searchTermLowerCase) ||
+        staff.email.toLowerCase().includes(searchTermLowerCase) ||
+        staff.status.toLowerCase().includes(searchTermLowerCase)
     );
-    setFilteredUsers(filtered);
+    setFilteredStaff(filtered);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedUsers = filteredUsers.slice(startIndex, endIndex);
+  const displayedStaff = filteredStaff.slice(startIndex, endIndex);
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredStaff.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -125,49 +121,47 @@ const AdminManageUsers = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
-  const EditUserModal = ({ user, onClose }) => {
-    const [editedUser, setEditedUser] = useState({
-      fname: user.fname,
-      lname: user.lname,
-      email: user.email,
-      password: user.password,
-      contactNum: user.contactNum,
-      department: user.department,
-      role: user.role,
-      position: user.position,
+  const EditStaffModal = ({ staff, onClose }) => {
+    const [editedStaff, setEditedStaff] = useState({
+      fname: staff.fname,
+      lname: staff.lname,
+      email: staff.email,
+      contactNum: staff.contactNum,
+      status: staff.status,
     });
-  
+
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      setEditedUser((prevData) => ({
+      setEditedStaff((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     };
-  
-    const handleUpdateUser = async () => {
+
+    const handleUpdateStaff = async () => {
       try {
-        await axios.put(`http://localhost:8080/user/admin/updateUser?userID=${user.userID}`, editedUser);
-        console.log("User updated successfully");
-        const updatedUsers = await axios.get("http://localhost:8080/user/getAllUsers");
-        setUsers(updatedUsers.data);
-        setFilteredUsers(updatedUsers.data);
-  
+        await axios.put(`http://localhost:8080/staff/admin/updateStaff?staffID=${staff.staffID}`, editedStaff);
+        console.log("Staff updated successfully");
+        const updatedStaff = await axios.get("http://localhost:8080/staff/getAllStaff");
+        setStaff(updatedStaff.data);
+        setFilteredStaff(updatedStaff.data);
+
         onClose();
       } catch (error) {
-        console.error("Error updating user:", error);
+        console.error("Error updating staff:", error);
       }
     };
-  
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-md w-5/12">
         <div className="bg-red-500 p-2 font-bold text-lg text-white rounded-t-lg flex justify-between items-center">
-          <span>Edit User</span>
+          <span>Edit Staff</span>
         </div>
     
         <div className="p-4">
           <form>
+
           <div className="mb-4 flex">
             <div className="mr-2 w-1/2">
               <label htmlFor="fname" className="block text-sm font-medium text-gray-700">
@@ -177,7 +171,7 @@ const AdminManageUsers = () => {
                 type="text"
                 id="fname"
                 name="fname"
-                value={editedUser.fname}
+                value={editedStaff.fname}
                 onChange={handleInputChange}
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
@@ -191,7 +185,7 @@ const AdminManageUsers = () => {
                 type="text"
                 id="lname"
                 name="lname"
-                value={editedUser.lname}
+                value={editedStaff.lname}
                 onChange={handleInputChange}
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
@@ -206,21 +200,7 @@ const AdminManageUsers = () => {
                 type="email"
                 id="email"
                 name="email"
-                value={editedUser.email}
-                onChange={handleInputChange}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div>
-    
-            <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={editedUser.password}
+                value={editedStaff.email}
                 onChange={handleInputChange}
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
@@ -235,68 +215,32 @@ const AdminManageUsers = () => {
                 type="text"
                 id="contactnumber"
                 name="contactNum"
-                value={editedUser.contactNum}
+                value={editedStaff.contactNum}
                 onChange={handleInputChange}
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
   
             <div className="ml-2 w-1/2">
-              <label htmlFor="department" className="block text-sm font-medium text-gray-700">
-                Department
+              <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+                Status
               </label>
               <input
                 type="text"
-                id="department"
-                name="department"
-                value={editedUser.department}
+                id="status"
+                name="status"
+                value={editedStaff.status}
                 onChange={handleInputChange}
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
           </div>
-  
-          <div className="mb-4 flex">
-            <div className="mr-2 w-1/2">
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                Role
-              </label>
-              <select
-                id="role"
-                name="role"
-                value={editedUser.role}
-                onChange={handleInputChange}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              >
-                <option value="user" className="hover:bg-red-500 hover:text-white">
-                  User
-                </option>
-                <option value="admin" className="hover:bg-red-500 hover:text-white">
-                  Admin
-                </option>
-              </select>
-            </div>
-  
-            <div className="ml-2 w-1/2">
-              <label htmlFor="position" className="block text-sm font-medium text-gray-700">
-                Position
-              </label>
-              <input
-                type="text"
-                id="position"
-                name="position"
-                value={editedUser.position}
-                onChange={handleInputChange}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div>
-          </div>
-    
+
             <div className="mt-2 mb-4 flex justify-end">
               <button
                 type="button"
                 className="bg-red-500 text-white px-3 py-1 w-auto rounded mr-2"
-                onClick={handleUpdateUser}
+                onClick={handleUpdateStaff}
               >
                 Update
               </button>
@@ -318,8 +262,10 @@ const AdminManageUsers = () => {
   
 
   return (
+
+    // View
     <div>
-      <AdminHomeFrame />
+      <AdminHomeFrame/>
       <div className="mt-24 ml-64">
         <div className="ml-16">
           <div className="mr-10 mb-4 flex items-center justify-between">
@@ -343,7 +289,7 @@ const AdminManageUsers = () => {
                 <FontAwesomeIcon
                   icon={faUserPlus}
                   className="mr-2"
-                  onClick={handleCreateUserClick}
+                  onClick={handleCreateStaffClick}
                   style={{ cursor: "pointer", color: "red", fontSize: "1.3rem" }}
                 />
               </div>
@@ -357,47 +303,45 @@ const AdminManageUsers = () => {
                   <tr>
                     <th className="whitespace-nowrap px-4 py-2 font-large font-bold text-gray-900">Name</th>
                       <th className="whitespace-nowrap px-4 py-2 font-large text-gray-900">Email</th>
-                      <th className="whitespace-nowrap px-4 py-2 font-large text-gray-900">Department</th>
-                      <th className="whitespace-nowrap px-4 py-2 font-large text-gray-900">Position</th>
+                      <th className="whitespace-nowrap px-4 py-2 font-large text-gray-900">Contact Number</th>
                       <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
                                 <div className="flex items-center">
-                                  <span className="mr-2 font-bold">Role</span>
+                                  <span className="mr-2 font-bold">Status</span>
                                   <select
                                     className="px-2 py-1 border rounded"
-                                    onChange={(e) => handleRoleFilter(e.target.value)}
+                                    onChange={(e) => handleStatusFilter(e.target.value)}
                                   >
                                     <option className="font-medium" value="">All</option>
-                                    <option className="font-medium" value="user">User</option>
-                                    <option className="font-medium" value="admin">Admin</option>
+                                    <option className="font-medium" value="available">Available</option>
+                                    <option className="font-medium" value="occupied">Occupied</option>
                                   </select>
                                 </div>
                               </th>
-                      <th className="whitespace-nowrap px-4 py-2 font-large text-gray-900">Contact Number</th>
+                              {/* para asa ni */}
                       <th className="whitespace-nowrap px-4 py-2 font-large text-gray-900">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {displayedUsers.map((user) => (
+                  {displayedStaff.map((staff) => (
                     <tr
-                      key={user.userID}
+                      key={staff.staffID}
                       className={`${
-                        activeRow === user.userID ? "bg-gray-200" : ""
+                        activeRow === staff.staffID ? "bg-gray-200" : ""
                       } hover:bg-gray-100 cursor-pointer`}
-                      onClick={() => handleSelectRow(user.userID)}
+                      onClick={() => handleSelectRow(staff.staffID)}
                     >
-                  <td className="justify-center whitespace-nowrap px-4 py-2 text-gray-700">{user.fname +' ' +user.lname}</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">{user.email}</td>
-                              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{user.department}</td>
-                              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{user.position}</td>
-                              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{user.role}</td>
-                              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{user.contactNum}</td>
+                  <td className="justify-center whitespace-nowrap px-4 py-2 text-gray-700">{staff.fname +' ' +staff.lname}</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">{staff.email}</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">{staff.contactNum}</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">{staff.status}</td>
+                            
                               <td className='whitespace-nowrap px-4 py-2 text-gray-700'>
                                       <div className='flex items-center'>
                                         <FontAwesomeIcon
                                           icon={faUserPen}
                                           className='mr-2'
                                           style={{ color: 'red', fontSize: '1.3rem', cursor: 'pointer'  }}
-                                          onClick={() => handleEditUser(user.userID)}
+                                          onClick={() => handleEditStaff(staff.staffID)}
                                         />
                                         <FontAwesomeIcon
                                           icon={faTrash}
@@ -405,7 +349,7 @@ const AdminManageUsers = () => {
                                           style={{ color: 'red', fontSize: '1.3rem', cursor: 'pointer'  }}
                                           onClick={(e) => {
                                             e.stopPropagation(); // Prevent row click from triggering
-                                            handleDeleteUser(user.userID);
+                                            handleDeleteStaff(staff.staffID);
                                           }}
                                         />
                                       </div>
@@ -494,15 +438,15 @@ const AdminManageUsers = () => {
           className="mr-2"
           style={{ color: 'white', fontSize: '1rem', cursor: 'pointer' }}
           onClick={toggleConfirmationDialog}
-        />Delete User</div>
+        />Delete Staff</div>
 
             <div className="p-4">
-            <p className="mb-6">Are you sure you want to delete this user?</p>
+            <p className="mb-6">Are you sure you want to delete this ?</p>
             <Divider/>
             <div className="mt-2 mb-4 flex justify-end">
               <button
                 className="bg-red-500 text-white px-3 py-1 w-14 rounded mr-2"
-                onClick={confirmDeleteUser}
+                onClick={confirmDeleteStaff}
               >
                 Yes
               </button>
@@ -518,17 +462,17 @@ const AdminManageUsers = () => {
         </div>
       )}
 
-      {showEditModal && (
-              <EditUserModal
-                user={editingUser}
-                onClose={() => {
-                  setEditingUser(null);
-                  setShowEditModal(false);
-                }}
-              />
-            )}
+        {showEditModal && (
+          <EditStaffModal
+            staff={editingStaff} // Fix the prop name
+            onClose={() => {
+              setEditingStaff(null);
+              setShowEditModal(false);
+            }}
+          />
+        )}
 
-      
+
     </div>
 
     
@@ -537,4 +481,4 @@ const AdminManageUsers = () => {
 
 
 
-export default AdminManageUsers;
+export default AdminManageStaff;

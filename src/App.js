@@ -16,34 +16,40 @@ import AdminManageUsers from './pages/Admin/AdminManageUsers';
 import AdminManageFacilities from './pages/Admin/AdminManageFacilities';
 import AdminCreateUser from './pages/Admin/AdminCreateUser';
 import AdminMyProfile from './pages/Admin/AdminMyProfile';
+import AdminManageStaff from './pages/Admin/AdminManageStaff';
+import AdminManageEquipment from './pages/Admin/AdminManageEquipment';
+import { isAuthenticated } from './AuthService';
+import Protected from './Protected';
 
 
 const App = () => {
+  const isUserAuthenticated = isAuthenticated();
   return (
-    <Router>
+   
       <div className="app">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/new-request" element={<NewRequest />} />
-          <Route path="/my-request" element={<MyRequest />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/my-profile" element={<MyProfile />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/home" element={<Protected isUserAuthenticated={isUserAuthenticated}><HomePage/></Protected>} />
+          <Route path="/about-us" element={<Protected isUserAuthenticated={isUserAuthenticated}><AboutUsPage /></Protected>} />
+    <Route path="/new-request" element={<Protected isUserAuthenticated={isUserAuthenticated}><NewRequest /></Protected>} />
+    <Route path="/my-request" element={<Protected isUserAuthenticated={isUserAuthenticated}><MyRequest /></Protected>} />
+    <Route path="/dashboard" element={<Protected isUserAuthenticated={isUserAuthenticated}><Dashboard /></Protected>} />
+    <Route path="/my-profile" element={<Protected isUserAuthenticated={isUserAuthenticated}><MyProfile /></Protected>} />
+    <Route path="/edit-profile" element={<Protected isUserAuthenticated={isUserAuthenticated}><EditProfile /></Protected>} />
 
-          
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/my-profile" element={<AdminMyProfile />} />
-          <Route path="/manage-request" element={<AdminManageRequest />} />
-          <Route path="/manage-users" element={<AdminManageUsers />} />
-          <Route path="/manage-facilities" element={<AdminManageFacilities />} />
-          <Route path="/manage-users/create-user" element={<AdminCreateUser />} />
+    <Route path="/admin-dashboard" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminDashboard /></Protected>} />
+    <Route path="/admin/my-profile" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminMyProfile /></Protected>} />
+    <Route path="/manage-request" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminManageRequest /></Protected>} />
+    <Route path="/manage-users" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminManageUsers /></Protected>} />
+    <Route path="/manage-facilities" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminManageFacilities /></Protected>} />
+    <Route path="/manage-users/create-user" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminCreateUser /></Protected>} />
+    <Route path="/manage-staff" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminManageStaff /></Protected>} />
+    <Route path="/manage-facilities/manage-equipment" element={<Protected isUserAuthenticated={isUserAuthenticated}><AdminManageEquipment /></Protected>} />
 
         </Routes>
       </div>
-    </Router>
+ 
   );
 };
 

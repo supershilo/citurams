@@ -49,7 +49,7 @@ const AboutUsPage = () => {
       {/* Team Members' Quotes */}
       <div className="que-sera-sera">“Que Sera, Sera”</div>
       <div className="sleep-well-live">“Sleep Well Live Well”</div>
-      <div className="stay-hydrated">“Stay hydrated”</div>
+      <div className="stay-hydrated">“Code is Poetry”</div>
       <div className="stay-hydrated1">“Stay hydrated”</div>
     </div>
   );

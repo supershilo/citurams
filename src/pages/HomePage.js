@@ -57,6 +57,12 @@ const HomePage = () => {
   const navigate = useNavigate();
   const storedUserEmail = sessionStorage.getItem('userEmail');
   const [userData, setUserData] = useState(null);
+  
+  const handleLogoutClick = () => {
+    sessionStorage.removeItem('userEmail');
+		navigate("/");
+	};
+
 
 
   useEffect(() => {
@@ -139,7 +145,7 @@ const HomePage = () => {
               </ListItemIcon>
               <ListItemText primary="My Request" />
             </ListItem>
-            <ListItem component={Link} to="/logout" button>
+            <ListItem onClick={handleLogoutClick} button>
               <ListItemIcon style={{ color: 'white' }}>
                 <LogoutIcon />
               </ListItemIcon>
@@ -158,6 +164,7 @@ const HomePage = () => {
             <img
               src="/LoginPage/wildcat.png"
               alt="wildcat logo"
+              onClick={handleLogoutClick}
               style={{
                 marginLeft: '-35%',
                 width: '120%',

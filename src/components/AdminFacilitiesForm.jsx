@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import {
 	Table,
@@ -42,6 +43,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const ManageFacilitiesTable = () => {
+	const navigate = useNavigate();
 	const [selectedBuilding, setSelectedBuilding] = useState("");
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [selectedRowIndex, setSelectedRowIndex] = useState(null);
@@ -283,6 +285,10 @@ const ManageFacilitiesTable = () => {
 		setCreateBuildingModalOpen(false);
 	};
 
+	const handleCreateEquipment = () => {
+		navigate("/manage-facilities/manage-equipment")
+	};
+
 	return (
 		<div>
 			<Grid container spacing={2}>
@@ -369,6 +375,7 @@ const ManageFacilitiesTable = () => {
 						variant="contained"
 						color="primary"
 						startIcon={<EquipmentIcon style={{ fontSize: "15px" }} />}
+						onClick={handleCreateEquipment}
 						style={{
 							height: "35px",
 							textTransform: "none",

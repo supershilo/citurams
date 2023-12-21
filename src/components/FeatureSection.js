@@ -1,17 +1,17 @@
-import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, MapPinIcon, ClipboardDocumentListIcon, HandThumbUpIcon} from '@heroicons/react/24/outline';
 
 const features = [
   {
     name: 'Efficient Request Management',
     description:
       'Streamline the process of submitting maintenance and repair requests with our user-friendly interface.',
-    icon: CloudArrowUpIcon,
+    icon: ClipboardDocumentListIcon,
   },
   {
     name: 'Transparent Status Tracking',
     description:
       'Stay informed about the status of your requests from submission to resolution, ensuring transparency and accountability.',
-    icon: LockClosedIcon,
+    icon: MapPinIcon,
   },
   {
     name: 'Equipment Inventory Management',
@@ -23,7 +23,7 @@ const features = [
     name: 'User-Friendly Interface',
     description:
       'Enjoy a hassle-free user experience with our intuitive and easy-to-navigate design.',
-    icon: FingerPrintIcon,
+    icon: HandThumbUpIcon,
   },
 ];
 

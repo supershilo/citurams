@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -11,8 +10,6 @@ import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 
 function RequestCard({
   uname,
@@ -44,6 +41,28 @@ function RequestCard({
   const isAdmin = role === "admin";
   const isUserWithRemarks = !isAdmin && isRemarked === true;
 
+  const inputStyle = {
+    width: "50%",
+    padding: "8px",
+    marginBottom: "15px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+    // Add more styles as needed
+  };
+
+  const textareaStyle = {
+    width: "100%",
+    padding: "8px",
+
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+    height: "100px", // Set specific textarea styles
+    resize: "vertical", // Allow vertical resizing
+    // Add more textarea-specific styles as needed
+  };
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -51,9 +70,23 @@ function RequestCard({
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
-    border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
+    p: 2.5,
+    borderTop: "20px solid #FC3031",
+    borderRadius: "8px",
+  };
+
+  const remarksStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    padding: "0px 3px 50px 30px",
+    borderTop: "20px solid #FC3031",
+    borderRadius: "8px",
   };
 
   //fetching Admin name
@@ -92,34 +125,79 @@ function RequestCard({
   const handleCloseDelete = () => setOpenDelete(false);
 
   return (
-    <Card sx={{ minWidth: 200, marginBottom: 2 }}>
+    <Card
+      sx={{
+        minWidth: 200,
+        marginBottom: 2,
+        padding: "8px",
+        borderRadius: "8px",
+        borderTop: "20px solid #FC3031",
+      }}
+    >
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Date:</b> {date}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Location:</b> {building} Bldg - {room}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Equipment:</b> {equipment}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Status:</b> {status}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Handled by:</b> {staff}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Message:</b> {message}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          <b>Requested by:</b> {uname}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <Typography sx={{ paddingBottom: "15px", fontSize: "15px" }}>
+                <b>Location: </b>&nbsp; {building} Bldg - {room}
+              </Typography>
+              <Typography sx={{ paddingBottom: "15px", fontSize: "15px" }}>
+                <b>Equipment:</b>&nbsp; {equipment}
+              </Typography>
+              <Typography sx={{ paddingBottom: "15px", fontSize: "15px" }}>
+                <b>Status:</b>&nbsp;{" "}
+                <span
+                  style={{
+                    color:
+                      status === "pending"
+                        ? "red"
+                        : status === "on-going"
+                        ? "#ffd700"
+                        : status === "resolved"
+                        ? "green"
+                        : "inherit",
+                  }}
+                >
+                  {status}
+                </span>
+              </Typography>
+              <Typography sx={{ paddingBottom: "15px", fontSize: "15px" }}>
+                <b>Message:</b>&nbsp; {message}
+              </Typography>
+              <Typography sx={{ fontSize: "15px" }}>
+                <b>Requested by:</b>&nbsp; {uname}
+              </Typography>
+            </div>
+            <div>
+              <Typography sx={{ paddingBottom: "15px", fontSize: "15px" }}>
+                <b>Date:</b>&nbsp; {date}
+              </Typography>
+              <Typography sx={{ fontSize: "15px" }}>
+                <b>Handled by:</b>&nbsp; {staff}
+              </Typography>
+            </div>
+          </Box>
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ justifyContent: "flex-end" }}>
         {isUserWithRemarks && (
           <>
-            <Button variant="contained" onClick={handleOpen}>
+            <Button
+              variant="contained"
+              onClick={handleOpen}
+              sx={{
+                backgroundColor: "#FC3031",
+                "&:hover": {
+                  backgroundColor: "#d12525",
+                },
+                color: "white",
+              }}
+            >
               View Remarks
             </Button>
             <Modal
@@ -128,15 +206,15 @@ function RequestCard({
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box sx={style}>
+              <Box sx={remarksStyle}>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  <b>Date:</b> {remarksDateTime}
+                  <b>Date:</b> &nbsp;{remarksDateTime}
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  <b>Admin:</b> {admin}
+                  <b>Admin:</b> &nbsp;{admin}
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  <b>Message:</b> {remarksMsg}
+                  <b>Message:</b> &nbsp;{remarksMsg}
                 </Typography>
               </Box>
             </Modal>
@@ -145,30 +223,62 @@ function RequestCard({
 
         {isAdmin && (
           <>
-            <Button variant="contained" onClick={handleOpen}>
+            <Button
+              variant="contained"
+              onClick={handleOpen}
+              sx={{
+                backgroundColor: "#FC3031",
+                "&:hover": {
+                  backgroundColor: "#d12525",
+                },
+              }}
+            >
               Manage Request
             </Button>
             <Dialog open={open} onClose={handleClose}>
-              <DialogContent>
+              <DialogContent
+                sx={{
+                  borderTop: "20px solid #FC3031",
+                  width: "500px",
+                }}
+              >
                 <form onSubmit={(e) => e.preventDefault()}>
-                  <label htmlFor="staff">Staff:</label>
-                  <select name="staff" id="staff" ref={inputStaff}>
+                  <label htmlFor="staff">Assign Staff: &nbsp; </label>
+                  <select
+                    style={inputStyle}
+                    name="staff"
+                    id="staff"
+                    ref={inputStaff}
+                  >
                     <option value="">Select Staff</option>
-                    <option value="staff1">Staff 1</option>
-                    <option value="staff2">Staff 2</option>
-                    <option value="staff3">Staff 3</option>
+                    <option value="Maria Santos">Maria Santos</option>
+                    <option value="Jose Dela Cruz">Jose Dela Cruz</option>
+                    <option value="Gabriela Aguilar">Gabriela Aguilar</option>
+                    <option value="Eduardo Tan">Eduardo Tan</option>
+                    <option value="Isabella Rivera">Isabella Rivera</option>
+                    <option value="Roberto Alvaro">Roberto Alvaro</option>
                   </select>
-
-                  <label htmlFor="status">Status:</label>
-                  <select name="status" id="status" ref={inputStatus}>
+                  <br />
+                  <label htmlFor="status">
+                    Status: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                  </label>
+                  <select
+                    style={inputStyle}
+                    name="status"
+                    id="status"
+                    ref={inputStatus}
+                  >
                     <option value="">Select Status</option>
                     <option value="pending">pending</option>
                     <option value="on-going">ongoing</option>
                     <option value="resolved">resolved</option>
                   </select>
+                  <br />
+                  {/* <label htmlFor="remarksMsg">Remarks:</label> */}
 
-                  <label htmlFor="remarksMsg">Remarks:</label>
                   <textarea
+                    style={textareaStyle}
                     id="remarksMsg"
                     placeholder=" Enter remarks"
                     required
@@ -177,14 +287,45 @@ function RequestCard({
                 </form>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => handleClose()}>Cancel</Button>
-                <Button onClick={() => onUpdate(reqID)}>Update</Button>
+                <Button
+                  sx={{
+                    backgroundColor: "#FC3031",
+                    "&:hover": {
+                      backgroundColor: "#d12525",
+                    },
+                    color: "white",
+                  }}
+                  onClick={() => handleClose()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  sx={{
+                    backgroundColor: "#FC3031",
+                    "&:hover": {
+                      backgroundColor: "#d12525",
+                    },
+                    color: "white",
+                  }}
+                  onClick={() => onUpdate(reqID)}
+                >
+                  Update
+                </Button>
               </DialogActions>
             </Dialog>
           </>
         )}
 
-        <Button variant="contained" onClick={handleOpenDelete}>
+        <Button
+          sx={{
+            backgroundColor: "#FC3031",
+            "&:hover": {
+              backgroundColor: "#d12525",
+            },
+          }}
+          variant="contained"
+          onClick={handleOpenDelete}
+        >
           Delete
         </Button>
         <Modal
@@ -193,16 +334,53 @@ function RequestCard({
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Box
+            sx={{
+              ...style,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              id="modal-modal-description"
+              sx={{ paddingBottom: "25px" }}
+            >
               Are you sure you want to delete this request?
             </Typography>
-            <Button variant="contained" onClick={() => onDelete(reqID)}>
-              Yes
-            </Button>
-            <Button variant="contained" onClick={() => handleCloseDelete()}>
-              No
-            </Button>
+            <Box
+              sx={{
+                width: "90%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                sx={{
+                  backgroundColor: "#FC3031",
+                  "&:hover": {
+                    backgroundColor: "#d12525",
+                  },
+                  marginRight: "10px",
+                }}
+                variant="contained"
+                onClick={() => onDelete(reqID)}
+              >
+                Yes
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "#FC3031",
+                  "&:hover": {
+                    backgroundColor: "#d12525",
+                  },
+                }}
+                variant="contained"
+                onClick={() => handleCloseDelete()}
+              >
+                No
+              </Button>
+            </Box>
           </Box>
         </Modal>
       </CardActions>

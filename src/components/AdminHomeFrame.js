@@ -16,6 +16,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import BusinessIcon from "@mui/icons-material/Business";
+import EngineeringIcon from '@mui/icons-material/Engineering';
 import axios from 'axios';
 
 const drawerWidth = 300;
@@ -51,6 +52,7 @@ const DrawerPaper = styled("div")({
 
 const AdminHomeFrame = () => {
 	const storedUserEmail = sessionStorage.getItem('userEmail');
+	const storedUserProfileImage = sessionStorage.getItem('userProfileImage');
 	const [userData, setUserData] = useState(null);
 	const navigate = useNavigate();
 
@@ -74,7 +76,12 @@ const AdminHomeFrame = () => {
 		navigate("/manage-facilities");
 	};
 
+	const handleManageStaffClick = () => {
+		navigate("/manage-staff");
+	};
+
 	const handleLogoutClick = () => {
+		sessionStorage.removeItem('userEmail');
 		navigate("/");
 	};
 
@@ -126,7 +133,7 @@ const AdminHomeFrame = () => {
 			<MainDrawer variant="permanent" component="nav" position="fixed">
 				<DrawerPaper>
           {/* User Profile Section */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
+          <div position="fixed" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px', marginTop: '10px' }}>
             <div  onClick={handleEditProfileClick} style={{ cursor: 'pointer'}}>
             <img
               src={userData?.profileImage ? base64ToDataURL(userData.profileImage) : '/user.png'}
@@ -175,7 +182,7 @@ const AdminHomeFrame = () => {
 									onClick={handleManageUserClick}
 								/>
 							</ListItem>
-							<ListItem button>
+							<ListItem button style={{ marginBottom: "10px" }}>
 								<ListItemIcon style={{ color: "white" }}>
 									<BusinessIcon />
 								</ListItemIcon>
@@ -184,9 +191,18 @@ const AdminHomeFrame = () => {
 									onClick={handleManageFacilitiesClick}
 								/>
 							</ListItem>
+							{/*<ListItem button>
+								<ListItemIcon style={{ color: "white" }}>
+									<EngineeringIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary="Manage Staff"
+									onClick={handleManageStaffClick}
+								/>
+							</ListItem>*/}
 						</List>
 
-						<ListItem button style={{ marginTop: "80px" }}>
+						<ListItem button style={{ marginTop: "50px" }}>
 							<ListItemIcon style={{ color: "white" }}>
 								<LogoutIcon />
 							</ListItemIcon>
@@ -197,7 +213,7 @@ const AdminHomeFrame = () => {
 					{/* Image at the bottom */}
 					<div
 						style={{
-							marginTop: "auto",
+							marginTop: "-20px",
 							textAlign: "left",
 							overflow: "hidden",
 						}}

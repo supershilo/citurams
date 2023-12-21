@@ -1,8 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/system";
 import HomeFrame from "../components/HomeFrame";
-import HomePage from "./HomePage";
 import { CSSTransition } from "react-transition-group";
 import RequestCard from "../components/RequestCard";
 import Tabs from "@mui/material/Tabs";
@@ -143,6 +141,11 @@ const MyRequest = () => {
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
+        style={{
+          height: "75vh",
+          backgroundColor: "#EDEDED",
+          overflow: "auto",
+        }}
         {...other}
       >
         {value === index && (
@@ -212,17 +215,59 @@ const MyRequest = () => {
     >
       <div>
         <HomeFrame />
-        <div className="mt-24 ml-64">
-          <div className="ml-16">
-            <Box sx={{ width: "100%" }}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <div
+          className="mt-24 ml-64"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div className="ml-16" style={{ width: "75%" }}>
+            <Box
+              sx={{
+                width: "100%",
+                borderRadius: "8px",
+                backgroundColor: "#ededed",
+              }}
+            >
+              <Box
+                sx={{
+                  borderBottom: 1,
+                  borderColor: "divider",
+                  backgroundColor: "#FFFFFF",
+                }}
+              >
                 <Tabs
                   value={value}
                   onChange={handleChange}
                   aria-label="basic tabs example"
+                  indicatorColor="transparent"
+                  textColor="inherit"
                 >
-                  <Tab label="Ongoing Request" {...a11yProps(0)} />
-                  <Tab label="Resolved Request" {...a11yProps(1)} />
+                  <Tab
+                    sx={{
+                      backgroundColor: value === 0 ? "#EDEDED" : "#B4B4B4",
+                      marginRight: "10px",
+                      borderRadius: "10px 10px 0px 0px",
+                      fontWeight: "bold",
+                      color: "#45474B",
+                      padding: "0px 20px 0px 20px",
+                    }}
+                    label="Ongoing Request"
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    sx={{
+                      backgroundColor: value === 1 ? "#EDEDED" : "#B4B4B4",
+                      borderRadius: "10px 10px 0px 0px",
+                      fontWeight: "bold",
+                      color: "#45474B",
+                      padding: "0px 20px 0px 20px",
+                    }}
+                    label="Resolved Request"
+                    {...a11yProps(1)}
+                  />
                 </Tabs>
               </Box>
               <CustomTabPanel value={value} index={0}>

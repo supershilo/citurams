@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { styled} from '@mui/system';
 import {
   AppBar,
@@ -53,7 +54,7 @@ const DrawerPaper = styled('div')({
 });
 
 const HomeFrame = () => {
-  const location = useLocation(); 
+  const navigate = useNavigate();
   const storedUserEmail = sessionStorage.getItem('userEmail');
   const [userData, setUserData] = useState(null);
   function base64ToDataURL(base64String) {
@@ -77,6 +78,11 @@ const HomeFrame = () => {
       fetchUserData();
     }
   }, [storedUserEmail]);
+
+  const handleLogoutClick = () => {
+    sessionStorage.removeItem('userEmail');
+		navigate("/");
+	};
 
 
   return (
@@ -150,7 +156,7 @@ const HomeFrame = () => {
               </ListItemIcon>
               <ListItemText primary="My Request" />
             </ListItem>
-            <ListItem component={Link} to="/">
+            <ListItem onClick={handleLogoutClick} style={{cursor: "pointer" }}>
               <ListItemIcon style={{ color: 'white' }}>
                 <LogoutIcon />
               </ListItemIcon>

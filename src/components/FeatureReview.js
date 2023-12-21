@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 const FeatureReview = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      const targetElement = document.getElementById('all-reviews');
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
 
-    
+    const readAllReviewsLink = document.getElementById('read-all-reviews-link');
+    if (readAllReviewsLink) {
+      readAllReviewsLink.addEventListener('click', handleScroll);
+    }
+
+    return () => {
+      if (readAllReviewsLink) {
+        readAllReviewsLink.removeEventListener('click', handleScroll);
+      }
+    };
+  }, []);
 return (
 
 <section className="bg-red-100">
@@ -21,7 +38,7 @@ return (
       </div>
 
       <a
-        href="#"
+        id="read-all-reviews-link"
         className="mt-6 inline-flex shrink-0 items-center gap-2 rounded-full border border-red-600 px-5 py-3 text-red-600 transition hover:bg-red-600 hover:text-white md:mt-0"
       >
         <span className="font-medium"> Read all reviews </span>
@@ -116,7 +133,7 @@ return (
         </div>
 
         <footer className="mt-4 text-sm font-medium text-gray-700 sm:mt-6">
-          &mdash; Michael Scott
+          &mdash; Jane Doe
         </footer>
       </blockquote>
 
@@ -192,7 +209,7 @@ return (
         </div>
 
         <footer className="mt-4 text-sm font-medium text-gray-700 sm:mt-6">
-          &mdash; Michael Scott
+          &mdash; Juan TuTri
         </footer>
       </blockquote>
 
@@ -268,7 +285,7 @@ return (
         </div>
 
         <footer className="mt-4 text-sm font-medium text-gray-700 sm:mt-6">
-          &mdash; Michael Scott
+          &mdash; John Doe
         </footer>
       </blockquote>
     </div>

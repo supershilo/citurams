@@ -8,6 +8,9 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 
 import axios from "axios";
 
@@ -32,6 +35,40 @@ const AdminManageRequest = () => {
   const inputStatus = useRef();
   const inputRemarks = useRef();
   const [adminFullname, setAdminFullname] = useState("");
+
+  // Add state for selected building and building options
+  const [selectedBuilding, setSelectedBuilding] = useState("");
+  const buildingOptions = [
+    "NGE",
+    "GLE",
+    "ACAD",
+    "ALLIED",
+    "RTL",
+    "LINK",
+    "G-PHYSLAB",
+    "G-LECROOM",
+  ];
+
+  const filterRequestsByBuilding = (requests, building) => {
+    if (building === "") {
+      return requests; // Return all requests if no building is selected
+    }
+    return requests.filter((request) => request.building === building);
+  };
+
+  const filteredOngoingRequests = filterRequestsByBuilding(
+    ongoingRequestList,
+    selectedBuilding
+  );
+  const filteredResolvedRequests = filterRequestsByBuilding(
+    resolvedRequestList,
+    selectedBuilding
+  );
+
+  // Handle building selection change
+  const handleBuildingChange = (event) => {
+    setSelectedBuilding(event.target.value);
+  };
 
   //fetch role by email
   useEffect(() => {
@@ -257,6 +294,11 @@ const AdminManageRequest = () => {
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
+        style={{
+          height: "75vh",
+          backgroundColor: "#EDEDED",
+          overflow: "auto",
+        }}
         {...other}
       >
         {value === index && (
@@ -302,21 +344,97 @@ const AdminManageRequest = () => {
     >
       <div>
         <AdminHomeFrame />
-        <div className="mt-24 ml-64">
-          <div className="ml-16">
-            <Box sx={{ width: "100%" }}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <div
+          className="mt-24 ml-64"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <InputLabel
+            htmlFor="building-select"
+            sx={{
+              position: "absolute",
+              top: 100, // Adjust to align label properly
+              right: 260, // Adjust to position label properly
+              background: "#fff", // Adjust as needed
+              padding: "0 4px", // Adjust as needed
+            }}
+          >
+            Filter by Building:
+          </InputLabel>
+          <Select
+            id="building-select"
+            sx={{
+              position: "absolute",
+              top: 98,
+              right: 130,
+              zIndex: 1,
+              fontSize: "0.8rem",
+              padding: "0px 0px",
+              minWidth: "130px",
+              height: "30px",
+            }}
+            value={selectedBuilding}
+            onChange={handleBuildingChange}
+          >
+            <MenuItem value="">All Buildings</MenuItem>
+            {buildingOptions.map((building, index) => (
+              <MenuItem key={index} value={building}>
+                {building}
+              </MenuItem>
+            ))}
+          </Select>
+          <div className="ml-16" style={{ width: "75%" }}>
+            <Box
+              sx={{
+                width: "100%",
+                borderRadius: "8px",
+                backgroundColor: "#ededed",
+              }}
+            >
+              <Box
+                sx={{
+                  borderBottom: 1,
+                  borderColor: "divider",
+                  backgroundColor: "#FFFFFF",
+                }}
+              >
                 <Tabs
                   value={value}
                   onChange={handleChange}
                   aria-label="basic tabs example"
+                  indicatorColor="transparent"
+                  textColor="inherit"
                 >
-                  <Tab label="Ongoing Request" {...a11yProps(0)} />
-                  <Tab label="Resolved Request" {...a11yProps(1)} />
+                  <Tab
+                    sx={{
+                      backgroundColor: value === 0 ? "#EDEDED" : "#B4B4B4",
+                      marginRight: "10px",
+                      borderRadius: "10px 10px 0px 0px",
+                      fontWeight: "bold",
+                      color: "#45474B",
+                      padding: "0px 20px 0px 20px",
+                    }}
+                    label="Ongoing"
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    sx={{
+                      backgroundColor: value === 1 ? "#EDEDED" : "#B4B4B4",
+                      borderRadius: "10px 10px 0px 0px",
+                      fontWeight: "bold",
+                      color: "#45474B",
+                      padding: "0px 20px 0px 20px",
+                    }}
+                    label="Resolved"
+                    {...a11yProps(1)}
+                  />
                 </Tabs>
               </Box>
               <CustomTabPanel value={value} index={0}>
-                {ongoingRequestList.map((request, index) => {
+                {filteredOngoingRequests.map((request, index) => {
                   return (
                     <RequestCard
                       key={index}
@@ -344,7 +462,7 @@ const AdminManageRequest = () => {
                 })}
               </CustomTabPanel>
               <CustomTabPanel value={value} index={1}>
-                {resolvedRequestList.map((request, index) => {
+                {filteredResolvedRequests.map((request, index) => {
                   return (
                     <RequestCard
                       key={index}

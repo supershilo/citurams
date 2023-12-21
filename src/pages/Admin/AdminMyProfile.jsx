@@ -4,8 +4,9 @@ import AdminHomeFrame from "../../components/AdminHomeFrame";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
 import { Navigate, useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 
 const AdminMyProfile = ({profilePhoto: initialProfilePhoto }) => {
@@ -414,18 +415,37 @@ const AdminMyProfile = ({profilePhoto: initialProfilePhoto }) => {
     </Dialog>
             {/* Confirmation Dialog */}
             <Dialog open={isConfirmationDialogOpen} onClose={handleConfirmationDialogClose}>
-              <DialogTitle>Confirm Save Changes</DialogTitle>
-              <DialogContent>
-                Are you sure you want to apply these changes?
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleConfirmationDialogClose} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={handleConfirmSaveChanges} variant="contained" color="primary">
-                  Confirm
-                </Button>
-              </DialogActions>
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-md w-96 h-40">
+            
+            <div className="bg-red-500 p-2 font-bold text-lg text-white rounded-t-lg">
+            <FontAwesomeIcon
+          icon={faExclamationCircle}
+          className="mr-2 w-5 h-5"
+          style={{ color: 'white', fontSize: '1rem', cursor: 'pointer' }}
+        />Confirm Save Changes</div>
+
+            <div className="p-4">
+            <p className="mb-6">Are you sure you want to apply these changes?</p>
+            <Divider/>
+            <div className="mt-2 mb-4 flex justify-end">
+              <button
+                className="bg-red-500 text-white px-3 py-1 w-auto rounded mr-2"
+                onClick={handleConfirmSaveChanges}
+              >
+                Confirm
+              </button>
+              <button
+                className="bg-gray-300 text-gray-700 px-3 w-auto py-1 rounded"
+                onClick={handleConfirmationDialogClose}
+              >
+                Cancel
+              </button>
+            </div>
+            </div>
+          </div>
+        </div>
+
             </Dialog>
     </div>
   </div>
