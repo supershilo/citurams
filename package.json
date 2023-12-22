@@ -3,19 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@canvasjs/react-charts": "^1.0.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.0.18",
     "@mui/icons-material": "^5.14.16",
+<<<<<<< Updated upstream
     "@mui/material": "^5.14.19",
+=======
+    "@mui/material": "^5.15.1",
+>>>>>>> Stashed changes
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.2",
+    "html2pdf.js": "^0.10.1",
+    "jspdf-autotable": "^3.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.19.0",
+<<<<<<< Updated upstream
     "react-scripts": "5.0.1",
+=======
+    "react-scripts": "^5.0.1",
+    "react-to-pdf": "^1.0.1",
+    "react-to-print": "^2.14.15",
+    "react-transition-group": "^4.4.5",
+>>>>>>> Stashed changes
     "web-vitals": "^2.1.4"
   },
   "scripts": {
